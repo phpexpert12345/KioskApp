@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "361549590329",
+    "project_id": "kiosk-app-7769e",
+    "storage_bucket": "kiosk-app-7769e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361549590329:android:dc155cb97a30c62a1ec2e8",
+        "android_client_info": {
+          "package_name": "com.phpexperts.kioskapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "361549590329-8j42u0g4ioaqa9q5nmumvlf2p2bu73pl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCdWXLIXVjOinG375foFFqgeX2L0pslwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361549590329-8j42u0g4ioaqa9q5nmumvlf2p2bu73pl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

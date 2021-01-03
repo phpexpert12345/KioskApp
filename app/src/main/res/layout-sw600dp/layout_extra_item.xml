@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_margin="@dimen/_15sdp"
+        android:padding="@dimen/_5sdp"
+        android:id="@+id/relative_extra"
+        android:background="@drawable/background_grey">
+        <RelativeLayout
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:id="@+id/relative_extra_img"
+            android:background="@drawable/edit_background">
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:id="@+id/img_extra_item"
+                android:layout_centerInParent="true"
+                android:src="@drawable/img_dosa"/>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textSize="25sp"
+            android:id="@+id/txt_extra_name"
+            android:layout_toEndOf="@+id/relative_extra_img"
+            android:textColor="@color/black"
+            android:text="Item Name"/>
+        <RelativeLayout
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+android:visibility="gone"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_toEndOf="@+id/relative_extra_img"
+            android:layout_below="@+id/txt_extra_name"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/relative_count"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:id="@+id/txt_count"
+                android:textSize="20sp"
+
+                android:text="1"
+                android:layout_centerInParent="true"/>
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:id="@+id/img_less"
+                android:src="@drawable/ic_minus"/>
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/img_more"
+                android:src="@drawable/ic_plus"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:id="@+id/txt_extra_price"
+            android:layout_below="@+id/txt_extra_name"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:text="$15.00"/>
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:id="@+id/img_extra_check"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check_icon"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

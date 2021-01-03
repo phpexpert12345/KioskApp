@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:id="@+id/relative_cart"
+        >
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerVertical="true"
+            android:id="@+id/img_back"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:src="@drawable/ic_arrow_back"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/txt_back"
+            android:layout_toEndOf="@+id/img_back"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_centerVertical="true"
+            android:text="Back"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_2sdp"
+        android:id="@+id/view_redeem"
+        android:layout_below="@+id/relative_cart"
+        android:background="@color/cart_empty"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_redeem"
+        android:textSize="25sp"
+        android:id="@+id/txt_coupon_code"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:textColor="@color/black"
+        android:text="@string/coupon_code"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_coupon_code"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:weightSum="2">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textSize="25sp"
+            android:inputType="text"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890"
+            android:id="@+id/edit_coupon_code"
+            android:textColor="@color/black"
+            android:textColorHint="@color/cart_empty"
+            android:hint="@string/coupon_code"
+            android:background="@drawable/background_edit_grey"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+
+            android:textSize="25sp"
+            android:gravity="center"
+            android:id="@+id/txt_apply"
+            android:textColor="@color/white"
+            android:text="@string/apply"
+            android:background="@drawable/background_filled_orange"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="16sp"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:text="corn"
+    android:textColor="@color/cart_empty"
+    android:id="@+id/txt_toppings"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:id="@+id/txt_toppings_price"
+        android:text="price"/>
+
+</LinearLayout>

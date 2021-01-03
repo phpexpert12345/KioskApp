@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:id="@+id/relative_cancel_order"
+        >
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerVertical="true"
+            android:id="@+id/img_cart_back"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:src="@drawable/ic_arrow_back"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="@dimen/_5sdp"
+            android:layout_centerInParent="true"
+            android:id="@+id/txt_order_cancel"
+
+            android:text="Cancel Order"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="My Order eat-in"
+            android:textAllCaps="true"/>
+        <ImageView
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_empty_cart"
+            android:layout_centerVertical="true"
+            android:id="@+id/img_empty_cart"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_2sdp"
+        android:id="@+id/view_order"
+        android:layout_below="@+id/relative_cancel_order"
+        android:background="@color/black"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_order_type"
+        android:layout_below="@+id/view_order"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:text="@string/order_type"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/linear_dine"
+                android:padding="@dimen/_10sdp"
+
+                android:layout_marginStart="@dimen/_30sdp"
+                android:background="@drawable/background_order_type"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_dine"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_chicken_black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dine_in"
+                    android:textAllCaps="true"
+                    android:textSize="30sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:id="@+id/txt_dine_in"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:padding="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+
+                android:id="@+id/linear_takeaway"
+
+                android:background="@drawable/background_order_type"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_gravity="center"
+                    android:layout_height="@dimen/_50sdp"
+
+                    android:scaleType="centerInside"
+                    android:id="@+id/img_takeaway"
+
+                    android:src="@drawable/ic_takeaway_black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/take_away"
+                    android:textAllCaps="true"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:id="@+id/txt_takeaway"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_order_type"
+        android:layout_above="@+id/relative_redeem">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:id="@+id/txt_no_cart_item"
+            android:text="@string/no_cart_items"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_orange"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyler_new_orders"
+
+            tools:itemCount="3"
+            android:layout_marginTop="@dimen/_10sdp"
+
+            tools:listitem="@layout/layout_new_order_item"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative_redeem"
+        android:padding="@dimen/_5sdp"
+        android:layout_above="@+id/relative_order_bottom"
+        android:background="@color/color_menu_background">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:textSize="35sp"
+            android:layout_margin="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:id="@+id/txt_apply_coupon"
+            android:text="@string/apply_coupon_code"
+            android:background="@drawable/circle_background_green"
+            app:drawableEndCompat="@drawable/ic_arrow_forward" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/txt_apply_coupon"
+            android:background="@drawable/circle_background_green">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:id="@+id/txt_points"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Loyalty Points :40"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:textSize="35sp"
+            android:gravity="center"
+
+            android:textColor="@color/white"
+            android:id="@+id/txt_redeem_points"
+            android:text="@string/redeem_loyalty_points"
+            android:background="@drawable/circle_background_green"
+            app:drawableEndCompat="@drawable/ic_arrow_forward" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textSize="30sp"
+            android:visibility="gone"
+            android:id="@+id/txt_congrats"
+            android:text="@string/congratulations"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:id="@+id/txt_redeem"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@+id/txt_congrats"
+            android:text="@string/redeem_txt"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:layout_toEndOf="@+id/txt_redeem"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_below="@+id/txt_congrats"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/redeem_coupon_code"/>
+
+        
+    </RelativeLayout>
+        
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relative_order_bottom"
+        android:background="@color/color_add">
+        <LinearLayout
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_6sdp"
+            android:id="@+id/linear_amount"
+            android:layout_margin="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:background="@drawable/edit_background">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="25sp"
+                android:text="Total:"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:id="@+id/txt_total_count"
+                android:text="$26.00"
+                />
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/linear_amount"
+            android:layout_margin="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:textSize="35sp"
+            android:gravity="center"
+            android:id="@+id/txt_place_order"
+            android:textColor="@color/white"
+            android:text="Place Order"
+            android:background="@drawable/background_filled_orange"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

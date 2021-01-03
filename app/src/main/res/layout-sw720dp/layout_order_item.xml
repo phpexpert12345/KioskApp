@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_35sdp"
+    android:layout_marginEnd="@dimen/_35sdp"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/edit_background">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/black"
+    android:textSize="25sp"
+    android:id="@+id/txt_order_item_name"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_15sdp"
+    android:text="@string/paper_dosa"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/txt_order_amount"
+        android:textSize="15sp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/black"
+        tools:text="$15.00"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/txt_order_amount"
+        android:textSize="15sp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/black"
+        tools:text="TAX $1.00"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/black"
+        android:id="@+id/view_order"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_below="@+id/txt_order_item_name"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/txt_total_amount"
+        android:textSize="25sp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_below="@+id/view_order"
+        android:textColor="@color/black"
+        tools:text="TOTAL $16.00"/>
+
+
+</RelativeLayout>

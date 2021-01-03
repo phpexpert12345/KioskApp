@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_4sdp"
+    android:elevation="@dimen/_5sdp"
+    android:background="@drawable/edit_background"
+    android:layout_margin="@dimen/_5sdp">
+    <ImageView
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_veg"/>
+    <ImageView
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_dosa"
+        android:id="@+id/img_menu_item"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/paper_dosa"
+        android:textStyle="normal"
+        android:layout_below="@+id/img_menu_item"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/menu_item_title"
+        android:textSize="26sp"
+        android:id="@+id/txt_menu_title"
+        android:layout_marginTop="@dimen/_5sdp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:text="$22.00"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_below="@+id/txt_menu_title"
+        android:id="@+id/txt_discounted_price"
+        android:textColor="@color/color_orange"
+        />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$15.00"
+        android:visibility="visible"
+        android:layout_alignParentEnd="true"
+        android:textStyle="normal"
+        android:textColor="@color/menu_item_title"
+        android:textSize="20sp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_below="@+id/txt_menu_title"
+        android:layout_gravity="center"
+        android:id="@+id/txt_menu_price"
+       />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+
+        android:layout_below="@+id/txt_menu_price">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_4sdp"
+            android:textColor="@color/color_red"
+            android:textSize="20sp"
+            android:id="@+id/txt_add"
+            android:gravity="center"
+            android:background="@drawable/background_stroke"
+            android:text="Add"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

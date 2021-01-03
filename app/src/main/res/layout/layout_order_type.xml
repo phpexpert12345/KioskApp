@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/info_background">
+    <LinearLayout
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/linear_dine"
+        android:padding="@dimen/_20sdp"
+      android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:background="@drawable/edit_background"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/_80sdp"
+            android:padding="@dimen/_15sdp"
+          android:scaleType="centerInside"
+            android:background="@drawable/circle_background_green"
+
+            android:src="@drawable/ic_chicken"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dine_in"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="wrap_content"
+
+        android:padding="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_centerInParent="true"
+        android:id="@+id/linear_takeaway"
+        android:layout_toEndOf="@+id/linear_dine"
+        android:background="@drawable/edit_background"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/_80sdp"
+            android:padding="@dimen/_15sdp"
+            android:scaleType="centerInside"
+            android:background="@drawable/circle_background_green"
+
+            android:src="@drawable/ic_takeaway"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_away"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+</RelativeLayout>
