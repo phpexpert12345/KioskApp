@@ -19,6 +19,7 @@ class ActivityThankYou : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_thankyou)
+
         val user=DroidPrefs.apply(this,"user", User::class.java) as User
         if(user.CustomerId!=null){
             txt_user_thank_you.text=getString(R.string.thank_you_txt)+" "+user.user_name
