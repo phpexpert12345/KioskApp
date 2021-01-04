@@ -57,6 +57,9 @@ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, 
     var alertDialog:AlertDialog?=null
     var deliveryChargeValue:String?=null
     var VatTax:String?=null
+    var discountOfferPrice:String?=null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cancel_order)
@@ -75,7 +78,10 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         }
 
         txt_place_order.setOnClickListener {
-            SubmitPayment()
+            EmptyCart()
+            val intent=Intent(this, ActivityThankYou::class.java)
+            startActivity(intent)
+            finish()
         }
         img_cart_back.setOnClickListener {
             finish()
@@ -237,12 +243,24 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                 VatTax=response.getString("VatTax")
                 val delivery_charge=deliveryChargeValue.toString().toDouble()
                 val vat_tax=VatTax.toString().toDouble()
-                total_price=total_price+delivery_charge+vat_tax
-                txt_total_count.text=getString(R.string.pound_symbol)+decimalFormat.format(total_price)
+                if(total_price>0.0) {
+                    total_price = total_price + delivery_charge + vat_tax
+                    txt_total_count.text = getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+                }
 
             }
             else if(type.equals("discount")){
-                Log.i("response", response.toString())
+                Log.i("res", response.toString())
+                if(response.has("discountOfferPrice")){
+                    discountOfferPrice=response.getString("discountOfferPrice")
+                    val offer_price=discountOfferPrice.toString().toDouble()
+                    if(offer_price>0.0){
+                        if(total_price>0.0) {
+                            total_price = total_price - offer_price
+                             txt_total_count.text = getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+                        }
+                    }
+                }
             }
 
         }
@@ -412,7 +430,6 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         params.put("loyltPnts", loyalty_points)
         params.put("TotalFoodCostAmount", total_price.toString())
         volleyService.CreateStringRequest(params)
-
     }
     fun PlaceOrder(){
          val volleyService=KioskVolleyService()
@@ -431,6 +448,11 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         params.put("order_price", total_price.toString())
         params.put("subTotalAmount", total_price.toString())
         params.put("delivery_time", current_date)
+        params.put("deliveryCharge",deliveryChargeValue.toString())
+        params.put("order_type",type)
+        params.put("SalesTaxAmount",VatTax.toString())
+        volleyService.CreateStringRequest(params)
+//        params.put("")
     }
     fun getServiceTax(){
         val kioskVolleyService=KioskVolleyService()

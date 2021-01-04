@@ -13,19 +13,19 @@ import com.phpexperts.kioskapp.Models.User
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.DroidPrefs
 import kotlinx.android.synthetic.main.layout_cancel_order.*
-import kotlinx.android.synthetic.main.layout_thankyou.*
+import kotlinx.android.synthetic.main.layout_thankyou.* 
 
 class ActivityThankYou : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_thankyou)
 
-        val user=DroidPrefs.apply(this,"user", User::class.java) as User
+        val user=DroidPrefs.get(this,"user", User::class.java) as User
         if(user.CustomerId!=null){
             txt_user_thank_you.text=getString(R.string.thank_you_txt)+" "+user.user_name
         }
         else {
-
+txt_user_thank_you.text=getString(R.string.thank_you_txt)
         }
 
         setSpan("45.00 min.")
