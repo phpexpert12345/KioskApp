@@ -40,7 +40,7 @@ class CustomerInfoActivity : AppCompatActivity() {
         setSpan("Click Here")
     }
     fun setSpan(type: String) {
-        val ss = SpannableString(getString(R.string.login_txt))
+        val ss = SpannableString(getString(R.string.click_here))
         val index = ss.indexOf(type)
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -56,9 +56,9 @@ class CustomerInfoActivity : AppCompatActivity() {
             }
         }
         ss.setSpan(clickableSpan, index, index + type.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        txt_login.text = ss
-        txt_login.movementMethod = LinkMovementMethod.getInstance()
-        txt_login.highlightColor = Color.TRANSPARENT
+        txt_login_txt.text = ss
+        txt_login_txt.movementMethod = LinkMovementMethod.getInstance()
+        txt_login_txt.highlightColor = Color.TRANSPARENT
 
     }
 

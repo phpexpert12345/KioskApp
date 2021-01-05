@@ -43,6 +43,9 @@ class LoginActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
                 getToken()
             }
         }
+        img_back.setOnClickListener {
+            finish()
+        }
 //        getToken()
 
     }

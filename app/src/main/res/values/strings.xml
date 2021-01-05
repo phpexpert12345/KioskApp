@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Kiosk App</string>
     <string name="order_here">Order here</string>
-    <string name="name">NAME</string>
+    <string name="name">Enter Name</string>
     <string name="email">Email Address</string>
-    <string name="phone">PHONE</string>
+    <string name="phone">Enter Mobile Number</string>
     <string name="password">Password</string>
     <string name="dine_in">Dine In</string>
     <string name="take_away">Take away</string>
@@ -35,7 +35,8 @@ Is this correct order.</string>
     <string name="large">Large</string>
     <string name="test_txt">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</string>
     <string name="condiments">Condiments</string>
-    <string name="login_txt">Do You Already Have An Account? Click Here</string>
+    <string name="login_txt">Do You Already Have An Account?</string>
+    <string name="click_here">Click Here</string>
     <string name="login">Login</string>
     <string name="guest_user">Guest User</string>
     <string name="cancel">Cancel</string>

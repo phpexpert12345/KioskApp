@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:id="@+id/edit_name"
             android:hint="@string/name"
-            android:textColorHint="@color/hint_color"
+            android:textColorHint="@color/black"
             android:layout_marginStart="@dimen/_10sdp"
             android:background="@null"
             />
@@ -71,7 +71,7 @@
             android:inputType="phone"
             android:maxLines="1"
             android:maxLength="10"
-            android:textColorHint="@color/hint_color"
+            android:textColorHint="@color/black"
             android:layout_marginStart="@dimen/_10sdp"
             android:background="@null"
             />
@@ -99,6 +99,20 @@
         android:layout_centerHorizontal="true"
         android:text="@string/login_txt"
         android:id="@+id/txt_login"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_login"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/click_here"
+
+        android:id="@+id/txt_login_txt"/>
     <Button
         android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
