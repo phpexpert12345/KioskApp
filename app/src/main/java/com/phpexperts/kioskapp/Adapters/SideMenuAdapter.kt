@@ -27,7 +27,7 @@ class SideMenuAdapter(sidemenuItems : ArrayList<MenuCat>, menuClicked: MenuClick
     class SideMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 fun bind(sideMenuItem: MenuCat, context: Context){
     itemView.txt_side_menu_title.text=sideMenuItem.category_name
-    Glide.with(context).load(sideMenuItem.category_img).into(itemView.img_side_menu )
+    Glide.with(context).load(sideMenuItem.category_img).placeholder(R.drawable.img_dosa).into(itemView.img_side_menu )
     itemView.linear_side_menu.tag=adapterPosition
 
 }

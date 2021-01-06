@@ -9,7 +9,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:elevation="@dimen/_7sdp"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_3sdp"
             android:id="@+id/linear_side_menu"
 android:layout_margin="@dimen/_6sdp"
             android:background="@drawable/edit_background"

@@ -46,6 +46,9 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
         txt_back.setOnClickListener {
             finish()
         }
+        img_back.setOnClickListener { 
+            finish()
+        }
 
         img_less.setOnClickListener {
             var count = txt_count.text.toString().toInt()

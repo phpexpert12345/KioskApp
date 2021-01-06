@@ -5,9 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.Menu
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.phpexperts.kioskapp.Adapters.BannerAdapter
-import com.phpexperts.kioskapp.Adapters.CartAdapter
 import com.phpexperts.kioskapp.Adapters.MenuAdapter
 import com.phpexperts.kioskapp.Adapters.SideMenuAdapter
 import com.phpexperts.kioskapp.Models.*
@@ -27,13 +24,12 @@ import com.phpexperts.kioskapp.Utils.Apis
 import com.phpexperts.kioskapp.Utils.CartDatabase
 import com.phpexperts.kioskapp.Utils.DroidPrefs
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
-import com.stripe.stripeterminal.Terminal
-import kotlinx.android.synthetic.main.layout_banner.view.*
 import kotlinx.android.synthetic.main.layout_menu_screen.*
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+
 
 class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
     var name=""
@@ -224,7 +220,18 @@ setMenuAdapter()
         }
     }
     fun setSubItemMenu(){
-        val menu_manager=GridLayoutManager(this,2)
+        val tabletSize = resources.getBoolean(R.bool.isTablet)
+
+        if (tabletSize) {
+            // do something
+          val   menu_manager=GridLayoutManager(this,2)
+            recyler_menu.layoutManager=menu_manager
+        } else {
+            val menu_manager=LinearLayoutManager(this)
+            recyler_menu.layoutManager=menu_manager
+            // do something else
+        }
+//        val menu_manager=GridLayoutManager(this,2)
         val adapter=MenuAdapter(subItemRecords,this, object:MenuAdapter.AddClciked{
             override fun Clicked(view: View, position: Int) {
                 val subItemRecords=subItemRecords.get(position)
@@ -235,7 +242,7 @@ setMenuAdapter()
             }
         } )
         recyler_menu.adapter=adapter
-        recyler_menu.layoutManager=menu_manager
+
     }
     fun getRestroInfo(){
         progress_menu.visibility=View.VISIBLE
