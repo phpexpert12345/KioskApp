@@ -5,6 +5,9 @@ import com.stripe.stripeterminal.TerminalLifecycleObserver
 
 class KioskApplication:Application() {
     private val observer :TerminalLifecycleObserver=TerminalLifecycleObserver.getInstance()
+    companion object{
+        var finish_activity:Boolean=false
+    }
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(observer)

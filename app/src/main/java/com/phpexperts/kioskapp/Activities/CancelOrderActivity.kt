@@ -24,10 +24,7 @@ import com.phpexperts.kioskapp.Models.OrderCartItem
 import com.phpexperts.kioskapp.Models.User
 import com.phpexperts.kioskapp.Models.UserInfo
 import com.phpexperts.kioskapp.R
-import com.phpexperts.kioskapp.Utils.Apis
-import com.phpexperts.kioskapp.Utils.CartDatabase
-import com.phpexperts.kioskapp.Utils.DroidPrefs
-import com.phpexperts.kioskapp.Utils.KioskVolleyService
+import com.phpexperts.kioskapp.Utils.*
 import com.stripe.stripeterminal.Terminal
 import com.stripe.stripeterminal.callable.ConnectionTokenCallback
 import com.stripe.stripeterminal.callable.ConnectionTokenProvider
@@ -64,7 +61,13 @@ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cancel_order)
         getCartItemsfromDataBase()
-        getRoyaltyPoints()
+        val user=DroidPrefs.get(this,"user", User::class.java)
+        if(user.CustomerId!=null) {
+            getRoyaltyPoints()
+        }
+        else {
+            linear_royalty_points.visibility=View.GONE
+        }
         getPaymentKey()
         getServiceTax()
         getDiscount()
@@ -84,7 +87,9 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             finish()
         }
         img_cart_back.setOnClickListener {
+            KioskApplication.finish_activity=true
             finish()
+
         }
         img_empty_cart.setOnClickListener {
             val builder=AlertDialog.Builder(this).setMessage(getString(R.string.empty_cart)).setPositiveButton(getString(R.string.ok)) { dialog, which ->
@@ -208,10 +213,10 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 
             }
             else if(type.equals("royalty_point")){
-                Log.i("response", response.toString())
-                if(response.has("Total_Loyalty_points")){
+                  if(response.has("Total_Loyalty_points")){
                    loyalty_points=response.getString("Total_Loyalty_points")
                     if(loyalty_points!=null){
+                        linear_royalty_points.visibility=View.VISIBLE
                         txt_points.setText(getString(R.string.loyalty_points)+" "+loyalty_points)
                     }
                 }

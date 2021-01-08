@@ -75,35 +75,38 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/linear_dine"
-                android:padding="@dimen/_10sdp"
 
+            <LinearLayout
+                android:id="@+id/linear_dine"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_30sdp"
                 android:background="@drawable/background_order_type"
-                android:orientation="vertical">
+
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
                 <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_gravity="center"
-                    android:layout_height="@dimen/_25sdp"
                     android:id="@+id/img_dine"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_chicken_black"/>
+                    android:src="@drawable/ic_chicken_black" />
+
                 <TextView
+                    android:id="@+id/txt_dine_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/dine_in"
-                    android:textAllCaps="true"
-                    android:textSize="18sp"
-                    android:id="@+id/txt_dine_in"
                     android:layout_gravity="center"
-                    android:textStyle="bold"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:gravity="center"
-                    android:textColor="@color/black"/>
+                    android:text="@string/dine_in"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -189,6 +192,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:id="@+id/linear_royalty_points"
             android:layout_below="@+id/txt_apply_coupon"
             android:background="@drawable/circle_background_green">
             <TextView

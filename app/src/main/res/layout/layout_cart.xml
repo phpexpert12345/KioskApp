@@ -37,8 +37,8 @@
         android:layout_below="@+id/relative_cart"
         android:background="@color/cart_empty"/>
     <RelativeLayout
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_100sdp"
         android:orientation="horizontal"
         android:layout_below="@+id/relative_cart"
         android:id="@+id/relative_dish"
@@ -46,13 +46,13 @@
         android:background="@drawable/background_grey">
 
 
-<ImageView
-    android:layout_width="@dimen/_70sdp"
-    android:layout_height="@dimen/_70sdp"
-   android:layout_centerInParent="true"
-    android:id="@+id/img_dish"
-    android:src="@drawable/img_dosa"
-    android:scaleType="fitXY"/>
+        <ImageView
+            android:id="@+id/img_dish"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_palceholder" />
 
     </RelativeLayout>
     <TextView

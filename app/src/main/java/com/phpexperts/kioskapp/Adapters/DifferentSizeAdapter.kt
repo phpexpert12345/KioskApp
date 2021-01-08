@@ -21,7 +21,7 @@ class DifferentSizeAdapter(sizeitems:ArrayList<RestaurantMenItemsSize>, sizeClic
     inner class DifferentSizeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 fun bind(restaurantMenItemsSize: RestaurantMenItemsSize){
     if(restaurantMenItemsSize.RestaurantPizzaItemName!=null) {
-        val name = restaurantMenItemsSize.RestaurantPizzaItemName!!.substring(0, restaurantMenItemsSize.RestaurantPizzaItemName!!.indexOf("|"))
+        val name = restaurantMenItemsSize.RestaurantPizzaItemName
         itemView.txt_sizes.text = name
     }
 

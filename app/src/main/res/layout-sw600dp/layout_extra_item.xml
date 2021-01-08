@@ -3,32 +3,33 @@
     android:layout_width="match_parent" android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_90sdp"
+        android:layout_height="@dimen/_60sdp"
         android:layout_margin="@dimen/_15sdp"
         android:padding="@dimen/_5sdp"
         android:id="@+id/relative_extra"
         android:background="@drawable/background_grey">
         <RelativeLayout
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_margin="@dimen/_10sdp"
             android:id="@+id/relative_extra_img"
             android:background="@drawable/edit_background">
             <ImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:id="@+id/img_extra_item"
+                android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
-                android:src="@drawable/img_dosa"/>
+                android:src="@drawable/ic_palceholder"/>
         </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="25sp"
+            android:layout_centerHorizontal="true"
             android:id="@+id/txt_extra_name"
-            android:layout_toEndOf="@+id/relative_extra_img"
+
             android:textColor="@color/black"
             android:text="Item Name"/>
         <RelativeLayout

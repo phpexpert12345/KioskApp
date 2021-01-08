@@ -14,10 +14,7 @@ import com.phpexperts.kioskapp.Adapters.CartAdapter
 import com.phpexperts.kioskapp.Adapters.DifferentSizeAdapter
 import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
-import com.phpexperts.kioskapp.Utils.Apis
-import com.phpexperts.kioskapp.Utils.CartDatabase
-import com.phpexperts.kioskapp.Utils.DroidPrefs
-import com.phpexperts.kioskapp.Utils.KioskVolleyService
+import com.phpexperts.kioskapp.Utils.*
 import kotlinx.android.synthetic.main.layout_cart.*
 import org.json.JSONObject
 import java.text.DecimalFormat
@@ -38,6 +35,7 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cart)
+        KioskApplication.finish_activity=false
 //        setAdapters()
         linear_amount.setOnClickListener{
             finish()
@@ -89,10 +87,8 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
                 var toppings_sum =0.0
                 val selected_toppings=cartAdapter!!.selected_items
                 Log.i("response", toppings_sum.toString())
-
                 if(selected_toppings.size>0){
                     for(toppings in selected_toppings){
-
                         val topping_price =toppings.Food_Price_Addons!!.toDouble()
                         toppings_sum+=topping_price
                         val toppingItems =ToppingItems()
@@ -102,15 +98,8 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
                         val toppingDao=cartDatabase.ToppingDao()
                         toppingDao!!.Insert(toppingItems)
                         total_price=price+toppings_sum
-
-
                     }
-
-
-
-
                 }
-
             }
             if(total_price>0.0){
                 val cartitem=cartDao.getOrderItem(orderCartItem.item_name.toString())
@@ -127,12 +116,19 @@ Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(KioskApplication.finish_activity){
+            finish()
+        }
+    }
     fun Init(){
         subItemRecords= intent.getSerializableExtra("sub_item") as SubItemRecords?
         type=intent.getStringExtra("type")!!
         if(subItemRecords!=null){
             txt_dish_name.text=subItemRecords!!.RestaurantPizzaItemName
-            Glide.with(this).load(subItemRecords!!.food_Icon).into(img_dish)
+            Glide.with(this).load(subItemRecords!!.food_Icon).placeholder(R.drawable.ic_palceholder).into(img_dish)
             txt_description.text=subItemRecords!!.ResPizzaDescription
             txt_order_amount.text=getString(R.string.pound_symbol)+subItemRecords!!.RestaurantPizzaItemPrice
             price =subItemRecords!!.RestaurantPizzaItemPrice!!.toDouble()

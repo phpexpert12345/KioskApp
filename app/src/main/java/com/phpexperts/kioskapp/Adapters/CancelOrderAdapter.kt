@@ -40,7 +40,7 @@ fun bind(extraItem: OrderCartItem, context: Context){
         itemView.order_dish_amount.text= context.getString(R.string.pound_symbol)+decimalFormat.format(extraItem.item_price!!.toDouble()*extraItem.quantity)
     }
 
-    Glide.with(context).load(extraItem.item_image).into(itemView.img_order_dish)
+    Glide.with(context).load(extraItem.item_image).placeholder(R.drawable.ic_palceholder).into(itemView.img_order_dish)
     itemView.img_less.setOnClickListener{
         var count=itemView.txt_count.text.toString().toInt()
         if(count==1){
