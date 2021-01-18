@@ -43,6 +43,7 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
     var currentPage=0
     val  DELAY_MS:Long=500
      val  PERIOD_MS:Long=3000
+    var item_id =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_menu_screen)
@@ -202,6 +203,7 @@ setMenuAdapter()
             override fun Clicked(view: View, position: Int) {
                 txt_menu.text=menu_cat_list.get(position).category_name
                 subItemRecords=menu_cat_list.get(position).subItemsRecord!!
+                item_id= menu_cat_list.get(position).id.toString()
                 if(subItemRecords.size>0){
                     setSubItemMenu()
                 }
@@ -238,6 +240,7 @@ setMenuAdapter()
                 val intent=Intent(this@MenuActivity, ActivityCart::class.java)
                 intent.putExtra("sub_item", subItemRecords )
                 intent.putExtra("type", type)
+                intent.putExtra("item_id",item_id)
                 startActivity(intent)
             }
         } )

@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "topping_items", indices = arrayOf(Index(value = ["topping_name", "item_name"], unique = true)))
+@Entity(tableName = "topping_items", indices = arrayOf(Index(value = ["topping_name", "item_id"], unique = true)))
 class ToppingItems {
     @ColumnInfo(name = "topping_name")
     @SerializedName("topping_name")
@@ -21,5 +21,8 @@ class ToppingItems {
     @SerializedName("topping_id")
     @PrimaryKey(autoGenerate = true)
     var topping_id :Int=0
+    @ColumnInfo(name="item_id")
+    @SerializedName("item_id")
+    var item_id:String?=null
 
 }

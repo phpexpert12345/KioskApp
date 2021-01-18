@@ -32,10 +32,15 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
     var subExtraItemsRecords=ArrayList<SubExtraItemsRecord>()
     var cartAdapter:CartAdapter?=null
     var size_type:String?=null
+    var item_id:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cart)
         KioskApplication.finish_activity=false
+        if(intent.hasExtra("item_id")){
+            item_id=intent.getStringExtra("item_id");
+
+        }
 //        setAdapters()
         linear_amount.setOnClickListener{
             finish()
@@ -95,6 +100,7 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
                         toppingItems.topping_name=toppings.Food_Addons_Name
                         toppingItems.topping_price=toppings.Food_Price_Addons
                         toppingItems.item_name=subItemRecords!!.RestaurantPizzaItemName
+                        toppingItems.item_id=item_id
                         val toppingDao=cartDatabase.ToppingDao()
                         toppingDao!!.Insert(toppingItems)
                         total_price=price+toppings_sum
