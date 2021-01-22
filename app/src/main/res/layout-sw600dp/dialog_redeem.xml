@@ -48,13 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_coupon_code"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginStart="@dimen/_20sdp"
         android:weightSum="2">
         <EditText
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.4"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:padding="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="25sp"
@@ -66,11 +66,11 @@
             android:hint="@string/coupon_code"
             android:background="@drawable/background_edit_grey"/>
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:padding="@dimen/_10sdp"
 
             android:textSize="25sp"

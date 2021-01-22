@@ -262,4 +262,25 @@ setMenuAdapter()
         kioskVolleyService.CreateStringRequest(params)
     }
 
+    override fun onResume() {
+        super.onResume()
+        UpdateCart()
+    }
+    fun UpdateCart(){
+        val cartDatabse=CartDatabase.getDataBase(this)
+        val cartDao=cartDatabse!!.OrderCartDao()
+        val cartitems=cartDao!!.getCartItems()
+        if(cartitems.size>0){
+            txt_cart_number.visibility=View.VISIBLE
+txt_cart_number.setText(""+cartitems.size)
+        }
+        else {
+            txt_cart_number.visibility=View.GONE
+
+        }
+
+    }
+
+
+
 }

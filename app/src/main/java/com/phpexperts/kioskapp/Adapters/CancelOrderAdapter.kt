@@ -23,12 +23,12 @@ class CancelOrderAdapter(extraitems:ArrayList<OrderCartItem>, context: Context,q
 
     var decimalFormat= DecimalFormat("##.00")
     interface Quantity{
-        fun quantityChanged(price:Double,type:Int)
+        fun quantityChanged(price:Double,type:Int, position: Int)
         fun DeleteClicked(view: View, pos:Int)
     }
 
    inner class CancelOrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-fun bind(extraItem: OrderCartItem, context: Context){
+fun bind(extraItem: OrderCartItem, context: Context,position: Int){
    itemView.txt_extra_menu_item.text=extraItem.item_name
     itemView.txt_order_size.text=extraItem.item_size_type
     itemView.txt_count.text=extraItem.quantity.toString()
@@ -41,6 +41,7 @@ fun bind(extraItem: OrderCartItem, context: Context){
     }
 
     Glide.with(context).load(extraItem.item_image).placeholder(R.drawable.ic_palceholder).into(itemView.img_order_dish)
+    itemView.img_less.tag=position
     itemView.img_less.setOnClickListener{
         var count=itemView.txt_count.text.toString().toInt()
         if(count==1){
@@ -59,12 +60,14 @@ fun bind(extraItem: OrderCartItem, context: Context){
 
             }
 //            var price =extraItem.item_price!!.toDouble()
+            val pos=it.tag
             itemView.txt_count.text=count.toString()
             var amount=count*price
-            quantity.quantityChanged(price,0)
+            quantity.quantityChanged(price,0, pos as Int)
             itemView.order_dish_amount.text=context.getString(R.string.pound_symbol)+decimalFormat.format(amount)
         }
     }
+    itemView.img_more.tag=position
     itemView.img_more.setOnClickListener{
         var count=itemView.txt_count.text.toString().toInt()
         count += 1
@@ -76,9 +79,10 @@ fun bind(extraItem: OrderCartItem, context: Context){
             price=extraItem.item_price!!.toDouble()
 
         }
+        val pos=it.tag
         itemView.txt_count.text=count.toString()
         var amount=count*price
-        quantity.quantityChanged(price,1)
+        quantity.quantityChanged(price,1, pos as Int)
         itemView.order_dish_amount.text=context.getString(R.string.pound_symbol)+decimalFormat.format(amount)
     }
     itemView.img_delete.tag=adapterPosition
@@ -101,7 +105,7 @@ fun bind(extraItem: OrderCartItem, context: Context){
 
     override fun onBindViewHolder(holder: CancelOrderViewHolder, position: Int) {
 val extraItem=extraitems.get(position)
-        holder.bind(extraItem,context)
+        holder.bind(extraItem,context,position)
     }
     fun getToppingsfromDataBase(holder: CancelOrderViewHolder,item_name:String){
         val cartDatabase=CartDatabase.getDataBase(context)

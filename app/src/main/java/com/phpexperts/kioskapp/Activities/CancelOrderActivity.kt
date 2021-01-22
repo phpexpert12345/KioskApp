@@ -19,10 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import bbota01z.bbota01z.bbota01z.e
 import com.phpexperts.kioskapp.Adapters.CancelOrderAdapter
-import com.phpexperts.kioskapp.Models.ExtraItem
-import com.phpexperts.kioskapp.Models.OrderCartItem
-import com.phpexperts.kioskapp.Models.User
-import com.phpexperts.kioskapp.Models.UserInfo
+import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.*
 import com.stripe.stripeterminal.Terminal
@@ -32,8 +29,10 @@ import com.stripe.stripeterminal.callable.TerminalListener
 import com.stripe.stripeterminal.log.LogLevel
 import com.stripe.stripeterminal.model.external.ConnectionTokenException
 import com.stripe.stripeterminal.model.external.Reader
+import kotlinx.android.synthetic.main.dialog_loyalty.view.*
 import kotlinx.android.synthetic.main.dialog_redeem.*
 import kotlinx.android.synthetic.main.dialog_redeem.view.*
+import kotlinx.android.synthetic.main.dialog_redeem.view.txt_back
 import kotlinx.android.synthetic.main.layout_cancel_order.*
 import kotlinx.android.synthetic.main.layout_order_item.*
 import org.json.JSONObject
@@ -52,9 +51,20 @@ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, 
     var payment_key=""
     var loyalty_points =""
     var alertDialog:AlertDialog?=null
+    var alertDialogLoyalty:AlertDialog?=null
     var deliveryChargeValue:String?=null
     var VatTax:String?=null
     var discountOfferPrice:String?=null
+    var  cartDatabase:CartDatabase?=null
+    var cartDao :OrderCartDao?=null
+    var toppingDao:ToppingDao?=null
+    var CouponCodePrice:String?=null
+    var coupon_discount:Double=0.0
+    var loyalty_price:Double=0.0
+    var delivery_charge:Double=0.0
+    var offer_price:Double=0.0
+    var tax:Double=0.0
+    var loyalty_discount:String?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +72,31 @@ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, 
         setContentView(R.layout.layout_cancel_order)
         getCartItemsfromDataBase()
         val user=DroidPrefs.get(this,"user", User::class.java)
+
+        val couponApplied=DroidPrefs.get(this,"coupon_applied",CouponApplied::class.java)
+        if(couponApplied!=null){
+            if(couponApplied.is_coupon_applied){
+                txt_apply_coupon.visibility=View.GONE
+                CouponCodePrice=couponApplied.coupon_discount;
+                coupon_discount=CouponCodePrice!!.toDouble()
+                UpdateData()
+            }
+            else {
+                txt_apply_coupon.visibility=View.VISIBLE
+            }
+        }
+        val loyaltyApplied=DroidPrefs.get(this,"loyalty_applied", LoyaltyApplied::class.java)
+        if(loyaltyApplied!=null){
+            if(loyaltyApplied.is_loyalty_applied){
+                linear_royalty_points.visibility=View.GONE
+                loyalty_discount=loyaltyApplied.loyalty_discount
+                loyalty_price=loyalty_discount!!.toDouble()
+                UpdateData()
+            }
+            else {
+                linear_royalty_points.visibility=View.VISIBLE
+            }
+        }
         if(user.CustomerId!=null) {
             getRoyaltyPoints()
         }
@@ -73,7 +108,7 @@ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, 
         getDiscount()
         txt_redeem_points.setOnClickListener {
             if(!loyalty_points.equals("")){
-                RedeemLoyaltyPoints(loyalty_points)
+                showLoyaltyDialog()
             }
             else {
 Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
@@ -126,8 +161,8 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         fun setAdapters() {
             txt_no_cart_item.visibility=View.GONE
             recyler_new_orders.visibility=View.VISIBLE
-            val cartDatabase = CartDatabase.getDataBase(this)
-            val toppingDao = cartDatabase!!.ToppingDao()
+
+             toppingDao = cartDatabase!!.ToppingDao()
             if(total_price>0.0){
                 total_price =0.0
             }
@@ -149,14 +184,35 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             val linearLayoutManager = LinearLayoutManager(this)
             val cancelOrderAdapter =
                 CancelOrderAdapter(orderCartItems, this, object : CancelOrderAdapter.Quantity {
-                    override fun quantityChanged(price: Double, type: Int) {
+                    override fun quantityChanged(price: Double, type: Int,pos:Int) {
                         when (type) {
-                            0 -> total_price -= price
-                            1 -> total_price += price
+
+                            0 -> {
+                                total_price -= price
+                                val cartItem=cartDao!!.getOrderItem(orderCartItems.get(pos).item_name!!)
+                                var quantity=cartItem.quantity
+                                quantity -= 1
+                                cartItem.quantity=quantity
+                                UpdateCart(cartItem)
+
+//
+                            }
+
+                            1 -> {
+                                total_price += price
+                                val cartItem=cartDao!!.getOrderItem(orderCartItems.get(pos).item_name!!)
+                                var quantity=cartItem.quantity
+                                quantity += 1
+                                cartItem.quantity=quantity
+                                UpdateCart(cartItem)
+                            }
+
                         }
 
                         txt_total_count.text =
                             getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+
+
                     }
 
                     override fun DeleteClicked(view: View, pos: Int) {
@@ -166,6 +222,11 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             recyler_new_orders.adapter = cancelOrderAdapter
             recyler_new_orders.layoutManager = linearLayoutManager
         }
+    fun UpdateCart(cartItem: OrderCartItem){
+        val database=CartDatabase.getDataBase(this)
+        val cartDao=database!!.OrderCartDao()
+        cartDao!!.Update(cartItem)
+    }
     fun showDeleteDialog(orderCartItem: OrderCartItem){
         val builder =AlertDialog.Builder(this).setMessage(getString(R.string.are_you_sure)+" "+orderCartItem.item_name+" "+getString(R.string.from_your_cart))
         builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
@@ -239,6 +300,20 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                     if(error==2){
                         Toast.makeText(this,response.getString("error_msg"),Toast.LENGTH_SHORT).show()
                     }
+                    else if(error==0){
+                       CouponCodePrice=response.getString("CouponCodePrice")
+                        val couponApplied=DroidPrefs.get(this,"coupon_applied",CouponApplied::class.java)
+                        if(couponApplied!=null){
+                            if(!couponApplied.is_coupon_applied){
+                                couponApplied.is_coupon_applied=true
+                                couponApplied.coupon_discount=CouponCodePrice
+                                DroidPrefs.apply(this,"coupon_applied", couponApplied)
+                                txt_apply_coupon.visibility=View.GONE
+                                coupon_discount=CouponCodePrice!!.toDouble()
+                                UpdateData()
+                            }
+                        }
+                    }
                 }
                 alertDialog!!.dismiss()
             }
@@ -246,23 +321,20 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                 Log.i("response", response.toString())
                 deliveryChargeValue=response.getString("deliveryChargeValue")
                 VatTax=response.getString("VatTax")
-                val delivery_charge=deliveryChargeValue.toString().toDouble()
-                val vat_tax=VatTax.toString().toDouble()
-                if(total_price>0.0) {
-                    total_price = total_price + delivery_charge + vat_tax
-                    txt_total_count.text = getString(R.string.pound_symbol) + decimalFormat.format(total_price)
-                }
+                delivery_charge=deliveryChargeValue.toString().toDouble()
+                tax=VatTax.toString().toDouble()
+                UpdateData()
+
 
             }
             else if(type.equals("discount")){
                 Log.i("res", response.toString())
                 if(response.has("discountOfferPrice")){
                     discountOfferPrice=response.getString("discountOfferPrice")
-                    val offer_price=discountOfferPrice.toString().toDouble()
+                     offer_price=discountOfferPrice.toString().toDouble()
                     if(offer_price>0.0){
                         if(total_price>0.0) {
-                            total_price = total_price - offer_price
-                             txt_total_count.text = getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+                           UpdateData()
                         }
                     }
                 }
@@ -291,6 +363,45 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             txt_redeem.highlightColor = Color.TRANSPARENT
 
         }
+    fun UpdateData(){
+        total_price=total_price-coupon_discount-loyalty_price+delivery_charge+tax-offer_price
+        txt_total_count.text =
+                getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+
+    }
+    fun showLoyaltyDialog(){
+        val builder=AlertDialog.Builder(this)
+        var loyalty=getString(R.string.loyalty_points_txt).toString()
+        loyalty=loyalty.replace("%",loyalty_points)
+        val view=layoutInflater.inflate(R.layout.dialog_loyalty,null)
+        builder.setView(view)
+        alertDialogLoyalty=builder.create()
+        alertDialogLoyalty!!.show()
+        view.txt_loyalty_count.text=loyalty
+        view.txt_back.setOnClickListener {
+            alertDialogLoyalty!!.dismiss()
+        }
+        val user_points=loyalty_points.toDouble()
+
+        view.txt_apply_loyalty.setOnClickListener {
+            if(view.edit_loyalty.text.toString().isEmpty()){
+                Toast.makeText(this, getString(R.string.please_loyalty_points), Toast.LENGTH_SHORT).show()
+            }
+            else if(!view.edit_loyalty.text.toString().equals("0",true)) {
+                val points=view.edit_loyalty.text.toString().toDouble()
+
+                if(points>0 && points<user_points){
+                    RedeemLoyaltyPoints(points.toString())
+                    alertDialogLoyalty!!.dismiss()
+                }
+
+
+            }
+            else {
+                 Toast.makeText(this, getString(R.string.please_loyalty_points), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
         fun showRedeemDialog() {
             val builder = AlertDialog.Builder(this)
@@ -333,8 +444,8 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
     }
 
         fun getCartItemsfromDataBase() {
-            val cartDatabase = CartDatabase.getDataBase(this)
-            val cartDao = cartDatabase!!.OrderCartDao()
+            cartDatabase = CartDatabase.getDataBase(this)
+             cartDao = cartDatabase!!.OrderCartDao()
             orderCartItems = cartDao!!.getCartItems() as ArrayList<OrderCartItem>
             if(orderCartItems.size>0) {
                 setAdapters()

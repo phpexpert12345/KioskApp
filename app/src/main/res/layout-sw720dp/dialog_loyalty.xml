@@ -39,32 +39,32 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_redeem"
         android:textSize="25sp"
-        android:id="@+id/txt_coupon_code"
+        android:id="@+id/txt_loyalty_count"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_25sdp"
-        android:textColor="@color/black"
-        android:text="@string/coupon_code"/>
+        android:textColor="@color/color_orange"
+        android:text="@string/loyalty_points_txt"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_coupon_code"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_below="@+id/txt_loyalty_count"
         android:orientation="vertical"
         android:layout_marginStart="@dimen/_20sdp"
         android:weightSum="2">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.4"
             android:padding="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="25sp"
-            android:inputType="text"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890"
-            android:id="@+id/edit_coupon_code"
+            android:inputType="number"
+            android:digits="1234567890"
+            android:id="@+id/edit_loyalty"
             android:textColor="@color/black"
             android:textColorHint="@color/cart_empty"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:hint="@string/coupon_code"
+            android:hint="@string/enter_loyalty_points"
             android:background="@drawable/background_edit_grey"/>
         <TextView
             android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             android:textSize="25sp"
             android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center"
-            android:id="@+id/txt_apply"
+            android:id="@+id/txt_apply_loyalty"
             android:textColor="@color/white"
             android:text="@string/apply"
             android:background="@drawable/background_filled_orange"/>

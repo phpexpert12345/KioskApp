@@ -33,6 +33,7 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
     var cartAdapter:CartAdapter?=null
     var size_type:String?=null
     var item_id:String?=null
+    var food_item_size_id:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cart)
@@ -83,6 +84,12 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
             orderCartItem.item_name=subItemRecords!!.RestaurantPizzaItemName
             orderCartItem.item_image=subItemRecords!!.food_Icon
             orderCartItem.item_size_type=size_type
+            if(food_item_size_id!=null) {
+                orderCartItem.item_size_id = food_item_size_id
+            }
+            else {
+                orderCartItem.item_size_id="0"
+            }
             orderCartItem.item_price=price.toString()
             orderCartItem.quantity=txt_count.text.toString().toInt()
             val cartDatabase=CartDatabase.getDataBase(this)
@@ -151,6 +158,7 @@ Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
     }
     fun getExtraItems(FoodItemSizeID:String){
         val kioskVolleyService=KioskVolleyService()
+        food_item_size_id=FoodItemSizeID
         kioskVolleyService.url= Apis.BASE_URL+"phpexpert_food_items_extra.php"
         val userInfo=DroidPrefs.get(this,"userinfo", UserInfo::class.java)
        val params=HashMap<String, String>()
@@ -220,6 +228,7 @@ if(type.equals("extra_items", true)){
                     setDifferentSizesAdapter()
                 }
                 else {
+                    progress_toppings.visibility=View.GONE
                     txt_no_extra.visibility=View.VISIBLE
                 }
             }
@@ -228,6 +237,7 @@ if(type.equals("extra_items", true)){
         }
     }
     fun  getDifferentSizes(){
+        progress_toppings.visibility=View.VISIBLE
         val kioskVolleyService=KioskVolleyService()
         kioskVolleyService.url= Apis.BASE_URL+"phpexpert_restaurantMenuItemSize.php"
         val userInfo=DroidPrefs.get(this,"userinfo", UserInfo::class.java)
@@ -241,14 +251,16 @@ if(type.equals("extra_items", true)){
         kioskVolleyService.CreateStringRequest(params)
     }
     fun setDifferentSizesAdapter(){
+        progress_toppings.visibility=View.GONE
         val horizontalmanager=LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        getExtraItems(resturantItemsSize.get(0 ).FoodItemSizeID.toString())
+        getExtraItems(resturantItemsSize.get(0).FoodItemSizeID.toString())
         val adapter=DifferentSizeAdapter(resturantItemsSize, object:DifferentSizeAdapter.SizeClicked{
             override fun Clicked(view: View, pos: Int) {
                 val restro=resturantItemsSize.get(pos)
                 price =resturantItemsSize.get(pos).RestaurantPizzaItemPrice!!.toDouble()
                 txt_order_amount.text=getString(R.string.pound_symbol)+resturantItemsSize.get(pos).RestaurantPizzaItemPrice
                 size_type=restro.RestaurantPizzaItemName!!.substring(0,restro.RestaurantPizzaItemName!!.indexOf("|"))
+
                 getExtraItems(resturantItemsSize.get(pos).FoodItemSizeID.toString())
             }
         },this )

@@ -48,7 +48,10 @@ Is this correct order.</string>
     <string name="redeem_txt">You Will Get 100 Loyalty Points Redeem </string>
     <string name="redeem_coupon_code">Redeem Coupon Code</string>
     <string name="coupon_code">Coupon Code</string>
+    <string name="enter_loyalty_points">Enter loyalty points</string>
+    <string name="loyalty_points_txt">You have % loyalty points</string>
     <string name="please_coupon_code">Please enter coupon code</string>
+    <string name="please_loyalty_points">Please enter loyalty points</string>
     <string name="name_on_card">Name on Card</string>
     <string name="card_number">Card Number</string>
     <string name="expiry_date">Expiry Date</string>

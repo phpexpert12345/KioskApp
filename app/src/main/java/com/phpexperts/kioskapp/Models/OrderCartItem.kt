@@ -30,4 +30,7 @@ class OrderCartItem  :Serializable{
     @ColumnInfo(name="total_price")
     @SerializedName("total_price")
     var total_price:String?=null
+    @ColumnInfo(name="item_size_id")
+    @SerializedName("item_size_id")
+    var item_size_id:String?=null
 }

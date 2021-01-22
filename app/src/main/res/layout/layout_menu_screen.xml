@@ -269,14 +269,28 @@
 
 
 
-    <ImageView
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_centerInParent="true"
-        android:id="@+id/img_cart"
-        android:elevation="@dimen/_6sdp"
+        <TextView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/txt_cart_number"
+            android:text="2"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:background="@drawable/cart_number"/>
 
-        android:src="@drawable/ic_cart"/>
+        <ImageView
+            android:id="@+id/img_cart"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_centerHorizontal="true"
+android:layout_centerInParent="true"
+            android:elevation="@dimen/_6sdp"
+            android:src="@drawable/ic_cart" />
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="@dimen/_60sdp"
