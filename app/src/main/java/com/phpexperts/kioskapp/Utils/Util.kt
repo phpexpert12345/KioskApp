@@ -3,7 +3,12 @@ package com.phpexperts.kioskapp.Utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import androidx.core.content.ContextCompat.getSystemService
+import android.util.Base64
+import android.util.Base64.NO_WRAP
+import android.util.Base64.encodeToString
+import java.io.UnsupportedEncodingException
+import java.nio.charset.Charset
+import java.util.*
 
 
 class Util {
@@ -17,6 +22,17 @@ class Util {
                 true
             } else false
             return connected
+        }
+        fun ConvertToBase64(string: String):String{
+
+            var base64 = ""
+            try {
+                val byteArray: ByteArray = string.toByteArray()
+                base64 = Base64.encodeToString(byteArray,Base64.NO_WRAP)
+            } catch (e: UnsupportedEncodingException) {
+                e.printStackTrace()
+            }
+            return base64
         }
     }
 }

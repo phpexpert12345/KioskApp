@@ -42,7 +42,24 @@ val json=JSONObject(response)
            }
        }, object :Response.ErrorListener{
            override fun onErrorResponse(error: VolleyError?) {
-Log.i("response", error.toString())
+
+               var body = ""
+               if (error!!.networkResponse != null) {
+                   if (error!!.networkResponse.data != null) {
+                       try {
+                           body = String(error.networkResponse.data, charset("UTF-8"))
+                           if(!body.equals("")){
+                               val jsonObject=JSONObject(body)
+                               Log.i("response",jsonObject.toString())
+                               kioskResult!!.onResult(jsonObject,type!!)
+                           }
+
+                       } catch (e: Exception) {
+
+                       }
+                   }
+
+               }
            }
        })
        {

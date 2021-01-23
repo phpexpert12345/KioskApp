@@ -1,9 +1,7 @@
  package com.phpexperts.kioskapp.Activities
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -12,29 +10,21 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import bbota01z.bbota01z.bbota01z.e
 import com.phpexperts.kioskapp.Adapters.CancelOrderAdapter
 import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.*
-import com.stripe.stripeterminal.Terminal
 import com.stripe.stripeterminal.callable.ConnectionTokenCallback
 import com.stripe.stripeterminal.callable.ConnectionTokenProvider
-import com.stripe.stripeterminal.callable.TerminalListener
-import com.stripe.stripeterminal.log.LogLevel
 import com.stripe.stripeterminal.model.external.ConnectionTokenException
-import com.stripe.stripeterminal.model.external.Reader
 import kotlinx.android.synthetic.main.dialog_loyalty.view.*
-import kotlinx.android.synthetic.main.dialog_redeem.*
 import kotlinx.android.synthetic.main.dialog_redeem.view.*
 import kotlinx.android.synthetic.main.dialog_redeem.view.txt_back
 import kotlinx.android.synthetic.main.layout_cancel_order.*
-import kotlinx.android.synthetic.main.layout_order_item.*
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -42,10 +32,11 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, ConnectionTokenProvider {
+ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, ConnectionTokenProvider {
     var extraItems=ArrayList<ExtraItem>()
     var orderCartItems =ArrayList<OrderCartItem>()
     var total_price =0.0
+    var order_price=0.0
     var type =""
     var decimalFormat= DecimalFormat("##.00")
     var payment_key=""
@@ -65,6 +56,18 @@ class CancelOrderActivity :AppCompatActivity(), KioskVolleyService.KioskResult, 
     var offer_price:Double=0.0
     var tax:Double=0.0
     var loyalty_discount:String?=null
+     var item_Id=""
+     var quantity=""
+     var Price=""
+     var strsizeid=""
+     var extraItemID=""
+     var subTotalAmount=""
+     var FoodCosts=""
+     var extraItemId1=""
+     var extraItemId2=""
+     var extra_toppings=""
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,10 +119,11 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         }
 
         txt_place_order.setOnClickListener {
-            EmptyCart()
-            val intent=Intent(this, ActivityThankYou::class.java)
-            startActivity(intent)
-            finish()
+            PlaceOrder()
+//            EmptyCart()
+//            val intent=Intent(this, ActivityThankYou::class.java)
+//            startActivity(intent)
+//            finish()
         }
         img_cart_back.setOnClickListener {
             KioskApplication.finish_activity=true
@@ -178,8 +182,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 
             }
             if (total_price > 0.0) {
-                txt_total_count.text =
-                    getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+                UpdateData()
             }
             val linearLayoutManager = LinearLayoutManager(this)
             val cancelOrderAdapter =
@@ -209,8 +212,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 
                         }
 
-                        txt_total_count.text =
-                            getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+                        UpdateData()
 
 
                     }
@@ -222,10 +224,12 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             recyler_new_orders.adapter = cancelOrderAdapter
             recyler_new_orders.layoutManager = linearLayoutManager
         }
+
     fun UpdateCart(cartItem: OrderCartItem){
         val database=CartDatabase.getDataBase(this)
         val cartDao=database!!.OrderCartDao()
         cartDao!!.Update(cartItem)
+        getCartItemsfromDataBase()
     }
     fun showDeleteDialog(orderCartItem: OrderCartItem){
         val builder =AlertDialog.Builder(this).setMessage(getString(R.string.are_you_sure)+" "+orderCartItem.item_name+" "+getString(R.string.from_your_cart))
@@ -277,7 +281,6 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                   if(response.has("Total_Loyalty_points")){
                    loyalty_points=response.getString("Total_Loyalty_points")
                     if(loyalty_points!=null){
-                        linear_royalty_points.visibility=View.VISIBLE
                         txt_points.setText(getString(R.string.loyalty_points)+" "+loyalty_points)
                     }
                 }
@@ -289,6 +292,20 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                     val success=response.getInt("success")
                     if(success==1){
                         Toast.makeText(this,response.getString("success_msg"),Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        val Total_Loyalty_amount=response.getString("Total_Loyalty_amount");
+                        loyalty_price=Total_Loyalty_amount.toDouble();
+                        linear_royalty_points.visibility=View.GONE
+                        val loyaltyApplied=DroidPrefs.get(this,"loyalty_applied",LoyaltyApplied::class.java)
+                        if(loyaltyApplied!=null){
+                            if(!loyaltyApplied.is_loyalty_applied){
+                                loyaltyApplied.is_loyalty_applied=true
+                                loyaltyApplied.loyalty_discount=Total_Loyalty_amount
+                                DroidPrefs.apply(this,"loyalty_applied",loyaltyApplied)
+                            }
+                        }
+                        UpdateData()
                     }
                 }
             }
@@ -319,9 +336,9 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             }
             else if(type.equals("service_charge")){
                 Log.i("response", response.toString())
-                deliveryChargeValue=response.getString("deliveryChargeValue")
+//                deliveryChargeValue=response.getString("deliveryChargeValue")
                 VatTax=response.getString("VatTax")
-                delivery_charge=deliveryChargeValue.toString().toDouble()
+//                delivery_charge=deliveryChargeValue.toString().toDouble()
                 tax=VatTax.toString().toDouble()
                 UpdateData()
 
@@ -338,6 +355,9 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
+            }
+            else if(type.equals("place_order")){
+                Log.i("response", response.toString())
             }
 
         }
@@ -364,9 +384,15 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 
         }
     fun UpdateData(){
-        total_price=total_price-coupon_discount-loyalty_price+delivery_charge+tax-offer_price
-        txt_total_count.text =
-                getString(R.string.pound_symbol) + decimalFormat.format(total_price)
+        if(total_price>0.0) {
+            order_price = total_price - coupon_discount - loyalty_price + delivery_charge + tax - offer_price
+            txt_total_count.text =
+                    getString(R.string.pound_symbol) + decimalFormat.format(order_price)
+        }
+        else {
+            txt_total_count.text =
+                    getString(R.string.pound_symbol) +"0.0"
+        }
 
     }
     fun showLoyaltyDialog(){
@@ -446,14 +472,96 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         fun getCartItemsfromDataBase() {
             cartDatabase = CartDatabase.getDataBase(this)
              cartDao = cartDatabase!!.OrderCartDao()
+            toppingDao=cartDatabase!!.ToppingDao()
             orderCartItems = cartDao!!.getCartItems() as ArrayList<OrderCartItem>
             if(orderCartItems.size>0) {
+
                 setAdapters()
             }
             else {
                 recyler_new_orders.visibility=View.GONE
                 txt_no_cart_item.visibility=View.VISIBLE
                 txt_total_count.text=getString(R.string.pound_symbol)+"0.0"
+                DroidPrefs.getDefaultInstance(this).clearkey("loyalty_applied")
+                DroidPrefs.getDefaultInstance(this).clearkey("coupon_applied")
+                txt_apply_coupon.visibility=View.VISIBLE
+                linear_royalty_points.visibility=View.VISIBLE
+            }
+            val itemId = StringBuilder()
+            val quant = StringBuilder()
+            val price_total = StringBuilder()
+            val strsize_all = StringBuilder()
+            var extra_all = StringBuilder()
+            var extraItemid3 = StringBuilder()
+            val extra_name = StringBuilder()
+            if(orderCartItems.size>0){
+                var total_price =0.0
+                for(order in orderCartItems){
+                    total_price+=order.total_price.toString().toDouble()*order.quantity
+                    itemId.append(order.item_id)
+                    itemId.append(",")
+                    quant.append(order.quantity)
+                    quant.append(",")
+                    price_total.append(order.total_price!!.toDouble()*order.quantity)
+                    price_total.append(",")
+                    strsize_all.append(order.item_size_id)
+                    strsize_all.append(",")
+                    val topping_list=toppingDao!!.getToppingsbyItem(order.item_name!!)
+                    if(topping_list.size>0){
+                        for(topping in topping_list){
+                            var extra_id: String
+                            extra_id = topping.topping_id.toString()
+                            extraItemid3.append(extra_id.trim())
+                            extraItemid3.append(",")
+                            extra_all.append(order.item_id.toString()+"_"+order.item_size_id+"_"+topping.topping_id.toString().trim())
+                            extra_all.append(",")
+                            extra_name.append("+"+topping.topping_name)
+
+                        }
+                        extra_name.append("_")
+                        extra_all.append("_")
+                        if(extra_all.length>0){
+                            extra_all=extra_all.deleteCharAt(extra_all.lastIndexOf(","))
+                        }
+                        if(extraItemid3.length>0){
+                            extraItemid3=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf(","))
+                        }
+                        extraItemid3.append("_")
+                    }
+
+
+
+                }
+                if (itemId.length > 0) {
+                    item_Id = itemId.deleteCharAt(itemId.lastIndexOf(",")).toString()
+                }
+                if (quant.length > 0) {
+                    quantity = quant.deleteCharAt(quant.lastIndexOf(",")).toString()
+                }
+                if (price_total.length > 0) {
+                    Price = price_total.deleteCharAt(price_total.lastIndexOf(",")).toString()
+                }
+                if (strsize_all.length > 0) {
+                    strsizeid = strsize_all.deleteCharAt(strsize_all.lastIndexOf(",")).toString()
+                }
+                if (extra_all.length > 0) {
+                    extraItemID = extra_all.deleteCharAt(extra_all.lastIndexOf("_")).toString()
+                }
+                if (total_price > 0.0) {
+                    subTotalAmount = java.lang.String.valueOf(total_price)
+                    FoodCosts = subTotalAmount
+                }
+                if(extraItemid3.length>0){
+                    extraItemId1=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf("_")).toString()
+                }
+
+                if(extra_name.length>0){
+                    extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString()
+                    extra_toppings=extraItemId2;
+
+                }
+                extraItemId2=Util.ConvertToBase64(extraItemId2)
+                Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID+" "+subTotalAmount+' '+FoodCosts+" "+extraItemId1+" "+extraItemId2);
             }
         }
 
@@ -548,26 +656,50 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         volleyService.CreateStringRequest(params)
     }
     fun PlaceOrder(){
+//        val url = "https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit.php?api_key=" + prefsHelper.getPref(Constants.API_KEY).toString() + "&lang_code=" + prefsHelper.getPref(Constants.LNG_CODE).toString() + "&payment_transaction_paypal=&itemId=" + item_Id.toString() + "&Quantity=" + quantity.toString() + "&Price=" + Price.toString() + "&strsizeid=" + strsizeid.toString() + "&extraItemID=" + extraItemID.toString() + "&CustomerId=" + CustomerId.toString() + "&CustomerAddressId=" + addressId.toString() + "&payment_type=Cash&order_price=" + order_price.toString() + "&subTotalAmount=" + subTotalAmount.toString() + "&delivery_date=" + delivery_date.toString() + "&delivery_time=" + delivery_time.toString() + "&instructions=" + instructions.toString() + "&deliveryCharge=" + deliveryChargeValue.toString() + "&CouponCode=" + CouponCode.toString() + "&CouponCodePrice=" + CouponCodePrice.toString() + "&couponCodeType=" + couponCodeType.toString() + "&SalesTaxAmount=" + SalesTaxAmount.toString() + "&order_type=" + order_type.toString() + "&SpecialInstruction=" + SpecialInstruction.toString() + "&extraTipAddAmount=" + extraTipAddAmount.toString() + "&RestaurantNameEstimate=" + RestaurantNameEstimate.toString() + "&discountOfferDescription=" + discountOfferDescription.toString() + "&discountOfferPrice=" + discountOfferPrice.toString() + "&RestaurantoffrType=" + RestaurantoffrType.toString() + "&ServiceFees=" + ServiceFees.toString() + "&PaymentProcessingFees=" + PaymentProcessingFees.toString() + "&deliveryChargeValueType=" + deliveryChargeValueType.toString() + "&ServiceFeesType=" + ServiceFeesType.toString() + "&PackageFeesType=" + PackageFeesType.toString() + "&PackageFees=" + PackageFees.toString() + "&WebsiteCodePrice=" + WebsiteCodePrice.toString() + "&WebsiteCodeType=" + WebsiteCodeType.toString() + "&WebsiteCodeNo=" + WebsiteCodeNo.toString() + "&preorderTime=" + preorderTime.toString() + "&VatTax=" + VatTax.toString() + "&GiftCardPay=" + GiftCardPay.toString() + "&WalletPay=" + WalletPay.toString() + "&loyptamount=" + loyptamount.toString() + "&table_number_assign=" + table_number_assign.toString() + "&customer_country=" + customer_country.toString() + "&group_member_id=" + group_member_id.toString() + "&loyltPnts=" + loyltPnts.toString() + "&branch_id=" + branch_id.toString() + "&FoodCosts=" + FoodCosts.toString() + "&getTotalItemDiscount=" + getTotalItemDiscount.toString() + "&getFoodTaxTotal7=" + getFoodTaxTotal7.toString() + "&getFoodTaxTotal19=" + getFoodTaxTotal19.toString() + "&TotalSavedDiscount=" + TotalSavedDiscount.toString() + "&discountOfferFreeItems=" + discountOfferFreeItems.toString() + "&number_of_people=" + number_of_people.toString() + "&resid=" + restId.toString() + "&mealID=" + mealID.toString() + "&mealquqntity=" + mealquqntity.toString() + "&mealPrice=" + mealPrice.toString() + "&mealItemExtra=" + mealItemExtra.toString() + "&mealItemOption=" + mealItemOption.toString() + "&discountOfferFreeItems=" + discountOfferFreeItems.toString() + "&extraItemID1=" + extraItemId1.toString() + "&extraItemIDName1=" + extraItemId2
+//        Log.i("reason", url)
          val volleyService=KioskVolleyService()
         volleyService.type="place_order"
         volleyService.context=this
         volleyService.kioskResult=this
-        volleyService.url=Apis.BASE_URL+" .php"
+        volleyService.url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit.php"
         val userInfo=DroidPrefs.get(this, "userinfo", UserInfo::class.java)
+        val user=DroidPrefs.get(this,"user", User::class.java)
         val simpledateformat=SimpleDateFormat("dd/MM/yyyy")
         val calendar =Calendar.getInstance()
         val current_date=simpledateformat.format(calendar.time)
         val params=HashMap<String,String>()
         params.put("api_key", userInfo.api_key.toString())
         params.put("lang_code", userInfo.customer_default_langauge.toString())
-        params.put("payment_type","Card")
-        params.put("order_price", total_price.toString())
+        params.put("payment_type","Cash")
+        params.put("order_price", order_price.toString())
         params.put("subTotalAmount", total_price.toString())
         params.put("delivery_time", current_date)
-        params.put("deliveryCharge",deliveryChargeValue.toString())
+        params.put("deliveryCharge",delivery_charge.toString())
         params.put("order_type",type)
         params.put("SalesTaxAmount",VatTax.toString())
+        params.put("itemId",item_Id)
+        params.put("Quantity",quantity)
+        params.put("Price",Price)
+        params.put("strsizeid",strsizeid)
+        params.put("extraItemID",extraItemID)
+        if(user.CustomerId!=null) {
+            params.put("CustomerId",user.CustomerId.toString())
+            params.put("CustomerAddressId","0")
+        }
+        else {
+            params.put("CustomerId", "0")
+            params.put("CustomerAddressId","0")
+        }
+        params.put("delivery_time","")
+        params.put("loyltPnts",loyalty_price.toString())
+        params.put("FoodCosts",FoodCosts)
+        params.put("resid",userInfo.resid.toString())
+        params.put("resid",userInfo.resid.toString())
+        params.put("extraItemID1",extraItemId1.toString())
+        params.put("extraItemIDName1",extraItemId2)
         volleyService.CreateStringRequest(params)
+
 //        params.put("")
     }
     fun getServiceTax(){
