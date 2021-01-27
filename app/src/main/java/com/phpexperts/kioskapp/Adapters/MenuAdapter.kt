@@ -27,8 +27,8 @@ fun bind(menuItem: SubItemRecords,context: Context,addClciked: AddClciked){
     itemView.txt_discounted_price.text=context.getString(R.string.pound_symbol)+menuItem.RestaurantPizzaItemOldPrice
     itemView.txt_discounted_price.setPaintFlags(itemView.txt_discounted_price.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
     Glide.with(context).load(menuItem.food_Icon).placeholder(R.drawable.ic_palceholder).into(itemView.img_menu_item)
-    itemView.txt_add.setTag(adapterPosition)
-    itemView.txt_add.setOnClickListener{  
+    itemView.relative_menu.setTag(adapterPosition)
+    itemView.relative_menu.setOnClickListener{
         val pos=it.tag
         addClciked.Clicked(it, pos as Int)
     }

@@ -163,8 +163,11 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 //        setSpan("Redeem")
         }
         fun setAdapters() {
-            txt_no_cart_item.visibility=View.GONE
-            recyler_new_orders.visibility=View.VISIBLE
+            relative_cart_items.visibility=View.VISIBLE
+            relative_order_bottom.visibility=View.VISIBLE
+            relative_redeem.visibility=View.VISIBLE
+            layout_order_type.visibility=View.VISIBLE
+            linear_no_cart.visibility=View.GONE
 
              toppingDao = cartDatabase!!.ToppingDao()
             if(total_price>0.0){
@@ -479,13 +482,14 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                 setAdapters()
             }
             else {
-                recyler_new_orders.visibility=View.GONE
-                txt_no_cart_item.visibility=View.VISIBLE
-                txt_total_count.text=getString(R.string.pound_symbol)+"0.0"
+                relative_cart_items.visibility=View.GONE
+                relative_order_bottom.visibility=View.GONE
+                relative_redeem.visibility=View.GONE
+                layout_order_type.visibility=View.GONE
                 DroidPrefs.getDefaultInstance(this).clearkey("loyalty_applied")
                 DroidPrefs.getDefaultInstance(this).clearkey("coupon_applied")
-                txt_apply_coupon.visibility=View.VISIBLE
-                linear_royalty_points.visibility=View.VISIBLE
+                linear_no_cart.visibility=View.VISIBLE
+
             }
             val itemId = StringBuilder()
             val quant = StringBuilder()
@@ -698,6 +702,27 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         params.put("resid",userInfo.resid.toString())
         params.put("extraItemID1",extraItemId1.toString())
         params.put("extraItemIDName1",extraItemId2)
+        params.put("instructions","")
+        params.put("CouponCode", "")
+        params.put("CouponCodePrice",coupon_discount.toString())
+        params.put("couponCodeType","")
+        params.put("SalesTaxAmount","0.0")
+        params.put("order_type",type)
+        params.put("SpecialInstruction","")
+        params.put("extraTipAddAmount","0.0")
+        params.put("RestaurantNameEstimate","")
+        params.put("discountOfferDescription","")
+        params.put("discountOfferPrice",offer_price.toString())
+        params.put("RestaurantoffrType","")
+        params.put("ServiceFees","0.0")
+        params.put("PackageFeesType","")
+        params.put("deliveryChargeValueType","")
+        params.put("WebsiteCodePrice","")
+        params.put("WebsiteCodeType","")
+        params.put("WebsiteCodeNo","")
+        params.put("preorderTime","")
+        params.put("WebsiteCodePrice","")
+        params.put("WebsiteCodePrice","")
         volleyService.CreateStringRequest(params)
 
 //        params.put("")

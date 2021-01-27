@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layout_order_type"
+        android:visibility="gone"
         android:layout_below="@+id/view_order"
         android:orientation="vertical">
         <TextView
@@ -142,18 +143,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/relative_cart_items"
+        android:visibility="gone"
         android:layout_below="@+id/layout_order_type"
         android:layout_above="@+id/relative_redeem">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:id="@+id/txt_no_cart_item"
-            android:text="@string/no_cart_items"
-            android:layout_centerInParent="true"
-            android:textColor="@color/color_orange"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -168,6 +162,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relative_redeem"
+        android:visibility="gone"
         android:padding="@dimen/_5sdp"
         android:layout_above="@+id/relative_order_bottom"
         android:background="@color/color_menu_background">
@@ -254,6 +249,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:id="@+id/relative_order_bottom"
         android:background="@color/color_add">
         <LinearLayout
@@ -300,4 +296,32 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/linear_no_cart"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/ic_shopping_bag"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:id="@+id/txt_no_cart_item"
+            android:text="@string/no_cart_items"
+            android:textColor="@color/color_add"/>
+
+    </LinearLayout>
 </RelativeLayout>

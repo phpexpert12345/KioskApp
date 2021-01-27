@@ -119,6 +119,11 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
                 cartitem.total_price=total_price.toString()
                 cartDao.Update(cartitem)
             }
+            else{
+                val cartitem=cartDao.getOrderItem(orderCartItem.item_name.toString())
+                cartitem.total_price=price.toString()
+                cartDao.Update(cartitem)
+            }
 
 Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
             startActivity(Intent(this,CancelOrderActivity::class.java).putExtra("type",type))
@@ -253,13 +258,14 @@ if(type.equals("extra_items", true)){
     fun setDifferentSizesAdapter(){
         progress_toppings.visibility=View.GONE
         val horizontalmanager=LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        size_type=resturantItemsSize.get(0).RestaurantPizzaItemName
         getExtraItems(resturantItemsSize.get(0).FoodItemSizeID.toString())
         val adapter=DifferentSizeAdapter(resturantItemsSize, object:DifferentSizeAdapter.SizeClicked{
             override fun Clicked(view: View, pos: Int) {
                 val restro=resturantItemsSize.get(pos)
                 price =resturantItemsSize.get(pos).RestaurantPizzaItemPrice!!.toDouble()
                 txt_order_amount.text=getString(R.string.pound_symbol)+resturantItemsSize.get(pos).RestaurantPizzaItemPrice
-                size_type=restro.RestaurantPizzaItemName!!.substring(0,restro.RestaurantPizzaItemName!!.indexOf("|"))
+                size_type=restro.RestaurantPizzaItemName!!
 
                 getExtraItems(resturantItemsSize.get(pos).FoodItemSizeID.toString())
             }

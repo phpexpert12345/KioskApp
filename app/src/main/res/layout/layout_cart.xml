@@ -37,8 +37,8 @@
         android:layout_below="@+id/relative_cart"
         android:background="@color/cart_empty"/>
     <RelativeLayout
-        android:layout_width="@dimen/_70sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
         android:orientation="horizontal"
         android:layout_below="@+id/relative_cart"
         android:id="@+id/relative_dish"

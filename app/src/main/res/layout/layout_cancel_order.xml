@@ -59,6 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layout_order_type"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_below="@+id/view_order"
         android:orientation="vertical">
@@ -73,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/linear_order_type"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal">
 
@@ -144,6 +146,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/relative_cart_items"
+        android:visibility="gone"
         android:layout_below="@+id/layout_order_type"
         android:layout_above="@+id/relative_redeem">
 
@@ -157,23 +161,15 @@
         android:layout_marginTop="@dimen/_10sdp"
 
         tools:listitem="@layout/layout_new_order_item"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:id="@+id/txt_no_cart_item"
-            android:text="@string/no_cart_items"
-            android:layout_centerInParent="true"
-            android:textColor="@color/color_orange"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relative_redeem"
         android:padding="@dimen/_5sdp"
-        android:visibility="visible"
+
+        android:visibility="gone"
         android:layout_above="@+id/relative_order_bottom"
         android:background="@color/color_menu_background">
         <TextView
@@ -192,6 +188,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="gone"
             android:id="@+id/linear_royalty_points"
             android:layout_below="@+id/txt_apply_coupon"
             android:background="@drawable/circle_background_green">
@@ -258,6 +255,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:id="@+id/relative_order_bottom"
         android:background="@color/color_add">
         <LinearLayout
@@ -303,5 +301,32 @@
             android:background="@drawable/background_filled_orange"/>
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/linear_no_cart"
+        android:layout_centerInParent="true">
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/_100sdp"
+    android:src="@drawable/ic_shopping_bag"/>
 
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:id="@+id/txt_no_cart_item"
+        android:text="@string/no_cart_items"
+        android:textColor="@color/color_add"/>
+
+    </LinearLayout>
 </RelativeLayout>
