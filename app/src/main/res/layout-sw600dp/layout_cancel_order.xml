@@ -324,4 +324,5 @@
             android:textColor="@color/color_add"/>
 
     </LinearLayout>
+
 </RelativeLayout>

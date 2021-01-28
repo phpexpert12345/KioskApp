@@ -9,8 +9,10 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.phpexperts.kioskapp.Models.GuestUser
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.Apis
+import com.phpexperts.kioskapp.Utils.DroidPrefs
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
 import kotlinx.android.synthetic.main.customer_info.*
 import kotlinx.android.synthetic.main.layout_cancel_order.*
@@ -33,7 +35,11 @@ class CustomerInfoActivity : AppCompatActivity() {
             }
             else {
 //                Login()
-                startActivity(Intent(this@CustomerInfoActivity, OrderTypeActivity::class.java).putExtra("name", edit_name.text.toString()).putExtra("phone",edit_phone.text.toString()))
+                val guestUser=GuestUser()
+                guestUser.name=edit_name.text.toString()
+                guestUser.phone=edit_phone.text.toString()
+                DroidPrefs.apply(this,"guest",guestUser)
+                startActivity(Intent(this@CustomerInfoActivity, OrderTypeActivity::class.java))
                 finish()
             }
         }

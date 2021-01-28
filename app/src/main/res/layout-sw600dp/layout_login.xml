@@ -31,7 +31,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="34sp"
+            android:textSize="25sp"
             android:inputType="textEmailAddress"
             android:maxLength="20"
             android:maxLines="1"
@@ -68,7 +68,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="34sp"
+            android:textSize="25sp"
             android:textColor="@color/info_background"
             android:layout_gravity="center"
             android:id="@+id/edit_password"

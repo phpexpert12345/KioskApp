@@ -20,7 +20,7 @@ class OrderTypeActivity :AppCompatActivity() {
                 duration = 2000
                 start()
             }
-            startActivity(Intent(this,MenuActivity::class.java).putExtra("name", name).putExtra("phone",phone).putExtra("type", "Dine In"))
+            startActivity(Intent(this,MenuActivity::class.java).putExtra("type", "Dine In"))
             finish()
         }
         linear_takeaway.setOnClickListener {
@@ -28,7 +28,7 @@ class OrderTypeActivity :AppCompatActivity() {
                 duration = 2000
                 start()
             }
-            startActivity(Intent(this,MenuActivity::class.java).putExtra("name", name).putExtra("phone",phone).putExtra("type", "Take away"))
+            startActivity(Intent(this,MenuActivity::class.java).putExtra("type", "Take away"))
             finish()
         }
 

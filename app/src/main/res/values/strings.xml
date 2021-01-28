@@ -29,7 +29,7 @@ after you`ve completed payment.</string>
 Is this correct order.</string>
     <string name="thank_you">"Thank you Prashant!</string>
     <string name="order_no">Your Order no. is</string>
-    <string name="order_serving_time">order serving time 45.00 min.</string>
+    <string name="order_serving_time">Order Time</string>
     <string name="small">Small</string>
     <string name="medium">Medium</string>
     <string name="large">Large</string>

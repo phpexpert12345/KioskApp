@@ -36,19 +36,20 @@
         android:gravity="center_horizontal"
        android:text="@string/thank_you"
         />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center"
-        android:textStyle="normal"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:lineSpacingExtra="11sp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center_horizontal"
+        android:lineSpacingExtra="11sp"
         android:text="@string/order_no"
-        />
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="normal" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

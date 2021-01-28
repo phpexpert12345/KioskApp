@@ -10,6 +10,7 @@ import com.phpexperts.kioskapp.Models.User
 import com.phpexperts.kioskapp.Models.UserInfo
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.Apis
+import com.phpexperts.kioskapp.Utils.CartDatabase
 import com.phpexperts.kioskapp.Utils.DroidPrefs
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
 import kotlinx.android.synthetic.main.layout_spalsh.*
@@ -47,6 +48,11 @@ class  SplashActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
                startActivity(Intent(this@SplashActivity,OrderTypeActivity::class.java).putExtra("name", user.user_name).putExtra("phone", user.user_phone))
            }
            else {
+               val cartDatabase=CartDatabase.getDataBase(this);
+               val cartDao=cartDatabase!!.OrderCartDao();
+               val toppingDao=cartDatabase.ToppingDao()
+               cartDao!!.DeleteAll()
+               toppingDao!!.DeleteAll()
                startActivity(Intent(this@SplashActivity,CustomerInfoActivity::class.java))
            }
 

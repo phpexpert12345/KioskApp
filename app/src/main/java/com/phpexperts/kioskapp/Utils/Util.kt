@@ -1,5 +1,6 @@
 package com.phpexperts.kioskapp.Utils
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -33,6 +34,14 @@ class Util {
                 e.printStackTrace()
             }
             return base64
+        }
+        fun showProgressDialog(context: Context, message:String):ProgressDialog{
+            val progressDialog=ProgressDialog(context)
+            progressDialog.setMessage(message)
+            progressDialog.setCancelable(false)
+            progressDialog.setCanceledOnTouchOutside(true)
+            progressDialog.show()
+            return progressDialog
         }
     }
 }

@@ -31,7 +31,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="35sp"
             android:inputType="textEmailAddress"
             android:maxLength="20"
             android:maxLines="1"
@@ -68,7 +68,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="35sp"
             android:textColor="@color/info_background"
             android:layout_gravity="center"
             android:id="@+id/edit_password"
@@ -82,14 +82,14 @@
             />
     </LinearLayout>
     <Button
-        android:layout_width="@dimen/_150sdp"
+        android:layout_width="@dimen/_160sdp"
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
         android:background="@color/color_orange"
         android:layout_below="@+id/linear_phone"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="45sp"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:textSize="40sp"
         android:text="@string/login"
         android:textColor="@color/white"
         android:id="@+id/btn_login_device"/>

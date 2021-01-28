@@ -47,11 +47,21 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_menu_screen)
-        name=intent.getStringExtra("name").toString()
-        phone=intent.getStringExtra("phone").toString()
+       val guestUser=DroidPrefs.get(this,"guest",GuestUser::class.java)
+        val user=DroidPrefs.get(this,"user",User::class.java)
+        if(!guestUser.phone.equals("")){
+            txt_user_name.text=guestUser.name
+            txt_user_phone.text=guestUser.phone
+        }
+        else{
+            if(user.CustomerId!=null){
+                txt_user_name.text=user.user_name
+                txt_user_phone.text=user.user_phone
+            }
+        }
+
+
         type=intent.getStringExtra("type").toString()
-        txt_user_name.text=name
-        txt_user_phone.text=phone
         txt_done.setOnClickListener {
             startActivity(Intent(this,PaymentSelectionActivity::class.java))
         }
