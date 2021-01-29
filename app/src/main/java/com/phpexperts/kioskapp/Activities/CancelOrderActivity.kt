@@ -767,13 +767,13 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 
                      override fun onFailure(e: TerminalException) {
                          progressDialog.dismiss()
-                         Toast.makeText(this@CancelOrderActivity,e.errorMessage,Toast.LENGTH_SHORT).show()
                          Log.i("respose","failure "+e.errorMessage)
                      }
                  })
              }
          },object: Callback {
              override fun onSuccess() {
+
                  Log.i("respose","success callack")
              }
 
