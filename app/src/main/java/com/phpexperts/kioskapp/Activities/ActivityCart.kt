@@ -16,6 +16,7 @@ import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.*
 import kotlinx.android.synthetic.main.layout_cart.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.ArrayList
@@ -183,33 +184,39 @@ if(type.equals("extra_items", true)){
     if(response.has("Menu_ItemExtraGroup")){
         var json =response.getJSONArray("Menu_ItemExtraGroup")
         if(json.length()>0){
+            if(json.get(0)is JSONArray){
             var array=json.getJSONArray(0)
 
             if(array !=null && array.length()>0){
                 var subextrajson =array.getJSONObject(0)
-                if(subextrajson!=null){
+                if(subextrajson!=null) {
                     Log.i("response", subextrajson.toString())
 
-                    var subextraItems=subextrajson.getJSONArray("subExtraItemsRecord")
-                    if(subextraItems!=null && subextraItems.length()>0){
-                        if(subExtraItemsRecords.size>0){
+                    var subextraItems = subextrajson.getJSONArray("subExtraItemsRecord")
+                    if (subextraItems != null && subextraItems.length() > 0) {
+                        if (subExtraItemsRecords.size > 0) {
                             subExtraItemsRecords.clear()
                         }
                         Log.i("response", subextraItems.toString())
-                        val gson=Gson()
-                    val type=object: TypeToken<ArrayList<SubExtraItemsRecord>>(){}.type
-                    subExtraItemsRecords=gson.fromJson<ArrayList<SubExtraItemsRecord>>(subextraItems.toString(),type)
-                        if(subExtraItemsRecords!=null && subExtraItemsRecords.size>0){
+                        val gson = Gson()
+                        val type = object : TypeToken<ArrayList<SubExtraItemsRecord>>() {}.type
+                        subExtraItemsRecords = gson.fromJson<ArrayList<SubExtraItemsRecord>>(subextraItems.toString(), type)
+                        if (subExtraItemsRecords != null && subExtraItemsRecords.size > 0) {
 
                             setAdapters()
                         }
 
                     }
+                }
 
 //
                 }
 
 
+            }
+            else{
+                val error_json=json.getJSONObject(0)
+                Log.i("res",error_json.toString())
             }
         }
 
@@ -234,7 +241,7 @@ if(type.equals("extra_items", true)){
                 }
                 else {
                     progress_toppings.visibility=View.GONE
-                    txt_no_extra.visibility=View.VISIBLE
+                    txt_no_extra.visibility=View.GONE
                 }
             }
         }

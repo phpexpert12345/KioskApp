@@ -41,7 +41,7 @@ import kotlin.collections.HashMap
     var order_price=0.0
     var type =""
     var decimalFormat= DecimalFormat("##.00")
-    var payment_key=""
+    var payment_key="sk_test_51IBgRmJn8e4e2E0abXie3lxtyhMrjPVuyB3HYFHlehf1WXBPQo7pQZOnrW4Nr01ZhjEWgkxCstBQZNySkfiPnXad00VXAXTjal"
     var loyalty_points =""
     var alertDialog:AlertDialog?=null
     var alertDialogLoyalty:AlertDialog?=null
@@ -122,7 +122,7 @@ import kotlin.collections.HashMap
         else {
             linear_royalty_points.visibility=View.GONE
         }
-        getPaymentKey()
+//        getPaymentKey()
         getServiceTax()
         getDiscount()
         txt_redeem_points.setOnClickListener {
@@ -140,7 +140,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             }
 //            Connect()
             Connect()
-            CollectPaymentTerminal()
+
 //            EmptyCart()
 //            val intent=Intent(this, ActivityThankYou::class.java)
 //            startActivity(intent)
@@ -318,8 +318,9 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                         Toast.makeText(this,response.getString("success_msg"),Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        val Total_Loyalty_amount=response.getString("Total_Loyalty_amount");
-                        loyalty_price=Total_Loyalty_amount.toDouble();
+                        val Total_Loyalty_amount=response.getString("Total_Loyalty_amount")
+                        getCartItemsfromDataBase()
+                        loyalty_price=Total_Loyalty_amount.toDouble()
                         linear_royalty_points.visibility=View.GONE
                         val loyaltyApplied=DroidPrefs.get(this,"loyalty_applied",LoyaltyApplied::class.java)
                         if(loyaltyApplied!=null){
@@ -751,18 +752,22 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         volleyService.CreateStringRequest(params)
     }
      fun Connect(){
+         progressDialog=Util.showProgressDialog(this,"Initiating Payment...")
          val config = DiscoveryConfiguration(0, DeviceType.CHIPPER_2X, true)
          Terminal.getInstance().discoverReaders(config,object: DiscoveryListener {
              override fun onUpdateDiscoveredReaders(readers: List<Reader>) {
                  val firstReader = readers.first()
                  Terminal.getInstance().connectReader(firstReader,object: ReaderCallback {
                      override fun onSuccess(reader: Reader) {
+                         progressDialog.dismiss()
                          Log.i("respose",reader.serialNumber!!)
                          CollectPaymentTerminal()
 
                      }
 
                      override fun onFailure(e: TerminalException) {
+                         progressDialog.dismiss()
+                         Toast.makeText(this@CancelOrderActivity,e.errorMessage,Toast.LENGTH_SHORT).show()
                          Log.i("respose","failure "+e.errorMessage)
                      }
                  })

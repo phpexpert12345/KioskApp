@@ -13,6 +13,7 @@ import com.phpexperts.kioskapp.Models.GuestUser
 import com.phpexperts.kioskapp.R
 import com.phpexperts.kioskapp.Utils.Apis
 import com.phpexperts.kioskapp.Utils.DroidPrefs
+import com.phpexperts.kioskapp.Utils.KioskApplication
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
 import kotlinx.android.synthetic.main.customer_info.*
 import kotlinx.android.synthetic.main.layout_cancel_order.*
@@ -22,7 +23,7 @@ class CustomerInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.customer_info)
-
+KioskApplication.finish_activity=false
         btn_guest.setOnClickListener{
             if(edit_name.text.toString().isEmpty()){
                 Toast.makeText(this,getString(R.string.name_error), Toast.LENGTH_SHORT).show();
@@ -65,6 +66,14 @@ class CustomerInfoActivity : AppCompatActivity() {
         txt_login_txt.text = ss
         txt_login_txt.movementMethod = LinkMovementMethod.getInstance()
         txt_login_txt.highlightColor = Color.TRANSPARENT
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(KioskApplication.finish_activity){
+            finish()
+        }
 
     }
 

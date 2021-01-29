@@ -3,11 +3,13 @@
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AlphaAnimation
 import androidx.appcompat.app.AppCompatActivity
 import com.phpexperts.kioskapp.R
 import kotlinx.android.synthetic.main.layout_order_type.*
 
-class OrderTypeActivity :AppCompatActivity() {
+
+ class OrderTypeActivity :AppCompatActivity() {
     var name =""
     var phone=""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,19 +17,14 @@ class OrderTypeActivity :AppCompatActivity() {
         setContentView(R.layout.layout_order_type)
         name= intent.getStringExtra("name").toString()
         phone=intent.getStringExtra("phone").toString()
+        val buttonClick = AlphaAnimation(1f, 0.3f)
         linear_dine.setOnClickListener {
-            ObjectAnimator.ofFloat(linear_dine, "translationY", 100f).apply {
-                duration = 2000
-                start()
-            }
+           it.startAnimation(buttonClick)
             startActivity(Intent(this,MenuActivity::class.java).putExtra("type", "Dine In"))
             finish()
         }
         linear_takeaway.setOnClickListener {
-            ObjectAnimator.ofFloat(linear_takeaway, "translationY", 100f).apply {
-                duration = 2000
-                start()
-            }
+            it.startAnimation(buttonClick)
             startActivity(Intent(this,MenuActivity::class.java).putExtra("type", "Take away"))
             finish()
         }

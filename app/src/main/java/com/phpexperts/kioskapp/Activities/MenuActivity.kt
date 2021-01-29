@@ -223,6 +223,8 @@ setMenuAdapter()
         recyler_side_menu.layoutManager=linearLayoutManager
         recyler_side_menu.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val pos=linearLayoutManager.findFirstVisibleItemPosition()
+            menuAdapter.selected_position=pos
+            menuAdapter.notifyDataSetChanged()
             txt_menu.text=menu_cat_list.get(pos).category_name
             subItemRecords=menu_cat_list.get(pos).subItemsRecord!!
             if(subItemRecords.size>0){

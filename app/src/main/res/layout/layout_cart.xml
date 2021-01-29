@@ -160,11 +160,13 @@ android:layout_below="@+id/relative_cart"
     <ImageView
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
+        android:layout_centerVertical="true"
         android:id="@+id/img_less"
         android:src="@drawable/ic_minus"/>
         <ImageView
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/img_more"
         android:src="@drawable/ic_plus"/>
