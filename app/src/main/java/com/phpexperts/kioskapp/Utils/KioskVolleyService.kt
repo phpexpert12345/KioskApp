@@ -37,8 +37,13 @@ class KioskVolleyService {
         val requestQueue= MySingleton.getInstance(context!!)!!.requestQueue
        val stringRequest=object :StringRequest(Request.Method.POST,url,object :Response.Listener<String>{
            override fun onResponse(response: String?) {
-val json=JSONObject(response)
-               kioskResult!!.onResult(json,type!!)
+               try {
+                   val json = JSONObject(response)
+                   kioskResult!!.onResult(json, type!!)
+               }
+               catch (e:java.lang.Exception){
+                   e.printStackTrace()
+               }
            }
        }, object :Response.ErrorListener{
            override fun onErrorResponse(error: VolleyError?) {

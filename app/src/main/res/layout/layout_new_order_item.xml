@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:maxLength="10"
+                android:maxLength="18"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:id="@+id/txt_extra_menu_item"
@@ -56,18 +56,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginEnd="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:id="@+id/linear_size">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:maxLength="15"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="15sp"
                     android:id="@+id/txt_order_size"
                     android:text="(Medium)"/>
                 <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
                     android:src="@drawable/ic_veg"
                     android:layout_marginStart="@dimen/_10sdp"/>
 

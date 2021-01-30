@@ -52,13 +52,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginEnd="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:id="@+id/linear_size">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="28sp"
+                    android:maxLength="20"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="20sp"
                     android:id="@+id/txt_order_size"
                     android:text="(Medium)"/>
                 <ImageView

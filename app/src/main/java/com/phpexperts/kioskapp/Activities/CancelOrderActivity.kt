@@ -41,7 +41,7 @@ import kotlin.collections.HashMap
     var order_price=0.0
     var type =""
     var decimalFormat= DecimalFormat("##.00")
-    var payment_key="sk_test_51IBgRmJn8e4e2E0abXie3lxtyhMrjPVuyB3HYFHlehf1WXBPQo7pQZOnrW4Nr01ZhjEWgkxCstBQZNySkfiPnXad00VXAXTjal"
+    var payment_key=""
     var loyalty_points =""
     var alertDialog:AlertDialog?=null
     var alertDialogLoyalty:AlertDialog?=null
@@ -122,7 +122,7 @@ import kotlin.collections.HashMap
         else {
             linear_royalty_points.visibility=View.GONE
         }
-//        getPaymentKey()
+        getPaymentKey()
         getServiceTax()
         getDiscount()
         txt_redeem_points.setOnClickListener {
@@ -138,8 +138,9 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             if (!Terminal.isInitialized()) {
                 Terminal.initTerminal(this, LogLevel.INFO, this, this)
             }
+            CollectPaymentTerminal()
 //            Connect()
-            Connect()
+//            Connect()
 
 //            EmptyCart()
 //            val intent=Intent(this, ActivityThankYou::class.java)
@@ -293,11 +294,15 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                 }
             }
             else if(type.equals("payment_key")){
-                val stripe_publishKey=response.getString("stripe_publishKey")
-                if(stripe_publishKey!=null){
-                    payment_key=stripe_publishKey
-
+                val token_secret=response.getJSONObject("token_secret")
+                if(token_secret.length()>0){
+                    payment_key=token_secret.getString("secret")
                 }
+//                val stripe_publishKey=response.getString("stripe_publishKey")
+//                if(stripe_publishKey!=null){
+//                    payment_key=stripe_publishKey
+//
+//                }
 
 
             }
@@ -700,7 +705,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
     fun getPaymentKey(){
         val volleyService=KioskVolleyService()
         volleyService.context=this
-        volleyService.url=Apis.BASE_URL+"phpexpert_payment_key.php"
+        volleyService.url=Apis.BASE_URL+"phpexpert_payment_generate_token.php"
         volleyService.type="payment_key"
         volleyService.kioskResult=this
         val userInfo=DroidPrefs.get(this,"userinfo",UserInfo::class.java)
@@ -800,7 +805,6 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
 
             volleyService.url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit_guest.php"
         }
-
         volleyService.context=this
         volleyService.kioskResult=this
         val simpledateformat=SimpleDateFormat("dd/MM/yyyy")
@@ -808,6 +812,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         val calendar =Calendar.getInstance()
         val current_date=simpledateformat.format(calendar.time)
          current_time=simple.format(calendar.time)
+        val delivery_time=Util.ConvertToBase64(current_time)
         val params=HashMap<String,String>()
         params.put("api_key", userInfo.api_key.toString())
         params.put("lang_code", userInfo.customer_default_langauge.toString())
@@ -831,7 +836,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             params.put("CustomerId", "0")
             params.put("CustomerAddressId","0")
         }
-        params.put("delivery_time",current_time)
+        params.put("delivery_time",delivery_time)
         params.put("loyltPnts",loyalty_price.toString())
         params.put("FoodCosts",FoodCosts)
         params.put("resid",userInfo.resid.toString())
@@ -878,6 +883,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         params.put("getFoodTaxTotal19","")
         params.put("TotalSavedDiscount","")
         params.put("discountOfferFreeItems","")
+        params.put("OrderTimeType","0")
         volleyService.CreateStringRequest(params)
 
 //        params.put("")
@@ -925,7 +931,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
          params.put("api_key", userInfo.api_key.toString())
          params.put("lang_code", userInfo.customer_default_langauge.toString())
          params.put("amount", order_price.toString())
-         params.put("currency", "usd")
+         params.put("currency", userInfo.customer_currency.toString())
          kioskVolleyService.CreateStringRequest(params)
      }
 
