@@ -35,12 +35,14 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
     var size_type:String?=null
     var item_id:String?=null
     var food_item_size_id:String?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cart)
         KioskApplication.finish_activity=false
         if(intent.hasExtra("item_id")){
             item_id=intent.getStringExtra("item_id");
+
 
         }
 //        setAdapters()
@@ -151,7 +153,12 @@ Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
             txt_description.text=subItemRecords!!.ResPizzaDescription
             txt_order_amount.text=getString(R.string.pound_symbol)+subItemRecords!!.RestaurantPizzaItemPrice
             price =subItemRecords!!.RestaurantPizzaItemPrice!!.toDouble()
-            getDifferentSizes()
+            if(subItemRecords!!.sizeavailable!!.equals("yes",true)) {
+                getDifferentSizes()
+            }
+            else if(subItemRecords!!.extraavailable.equals("yes",true)){
+                getExtraItems("0")
+            }
         }
     }
 

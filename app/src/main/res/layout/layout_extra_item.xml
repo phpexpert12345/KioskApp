@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="wrap_content">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_50sdp"
+    android:layout_height="@dimen/_40sdp"
     android:layout_marginStart="@dimen/_15sdp"
     android:layout_marginEnd="@dimen/_15sdp"
     android:layout_marginTop="@dimen/_5sdp"
@@ -15,6 +15,7 @@
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_margin="@dimen/_10sdp"
+        android:visibility="gone"
         android:id="@+id/relative_extra_img"
 
        >
@@ -29,6 +30,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:textSize="18sp"
         android:maxLength="10"
         android:maxLines="1"
@@ -79,7 +81,7 @@ android:layout_below="@+id/txt_extra_name"
 
         android:id="@+id/txt_extra_price"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/txt_extra_name"
+        android:layout_alignParentEnd="true"
         android:visibility="visible"
         android:textColor="@color/cart_empty"
         android:text="$15.00"/>
@@ -87,9 +89,9 @@ android:layout_below="@+id/txt_extra_name"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
         android:id="@+id/img_extra_check"
-        android:layout_centerVertical="true"
         android:src="@drawable/ic_check_icon"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentStart="true"
+       />
 </RelativeLayout>
 </RelativeLayout>

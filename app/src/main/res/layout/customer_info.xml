@@ -78,14 +78,14 @@ android:id="@+id/linear_name"
             />
     </LinearLayout>
     <Button
-        android:layout_width="@dimen/_130sdp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp"
         android:background="@color/color_orange"
-        android:layout_below="@+id/txt_login_txt"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+
         android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:text="@string/guest_user"
         android:textColor="@color/white"
         android:id="@+id/btn_guest"/>
