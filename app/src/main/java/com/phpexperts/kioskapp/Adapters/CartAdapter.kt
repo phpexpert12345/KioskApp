@@ -4,16 +4,21 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.phpexperts.kioskapp.Models.CartItem
+import com.phpexperts.kioskapp.Models.ItemExtraGroup
 import com.phpexperts.kioskapp.Models.SubExtraItemsRecord
 import com.phpexperts.kioskapp.R
+import com.phpexperts.kioskapp.Utils.ExtraClick
 import kotlinx.android.synthetic.main.layout_extra_item.view.*
 
-class CartAdapter(cartitems:ArrayList<SubExtraItemsRecord>, context : Context) :RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
+class CartAdapter(cartitems:ArrayList<SubExtraItemsRecord>,subExtraItemsRecord: ArrayList<ItemExtraGroup>, context : Context,extraClick: ExtraClick) :RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
     var cartitems=cartitems
     var context=context
+    var subExtraItemsRecord=subExtraItemsRecord
+    var extraClick=extraClick
     var selected_items=ArrayList<SubExtraItemsRecord>()
         fun getSelectedItems():ArrayList<SubExtraItemsRecord>{
             return selected_items
@@ -86,11 +91,37 @@ itemView.txt_extra_name.text=cartitem.Food_Addons_Name
     }
 
     override fun getItemCount(): Int {
-        return cartitems.size
+        if(subExtraItemsRecord.get(0).Food_addons_selection_Type.equals("Checkbox")){
+            return cartitems.size
+        }
+        else{
+            return subExtraItemsRecord.size
+        }
+
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-val cartitem=cartitems.get(position)
-        holder.bind(cartitem,context)
+
+        if(subExtraItemsRecord.get(0).Food_addons_selection_Type.equals("Checkbox")){
+            val cartitem=cartitems.get(position)
+            holder.itemView.txt_heading.visibility=View.GONE
+            holder.itemView.recyler_extra_items.visibility=View.GONE
+            holder.itemView.relative_extra.visibility=View.VISIBLE
+            holder.bind(cartitem,context)
+        }
+        else{
+            holder.itemView.txt_heading.visibility=View.VISIBLE
+            holder.itemView.recyler_extra_items.visibility=View.VISIBLE
+            holder.itemView.relative_extra.visibility=View.GONE
+            val subExtraItemsRecord=subExtraItemsRecord.get(position)
+            holder.itemView.txt_heading.text=subExtraItemsRecord.Food_Group_Name
+            val linearlayoutmanager=LinearLayoutManager(context)
+            val extraToppingAdapter=ExtraToppingAdapter(subExtraItemsRecord.subExtraItemsRecord,context,extraClick)
+            holder.itemView.recyler_extra_items.adapter=extraToppingAdapter
+            holder.itemView.recyler_extra_items.layoutManager=linearlayoutmanager
+
+
+        }
+
     }
 }

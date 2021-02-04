@@ -18,10 +18,10 @@ import com.phpexperts.kioskapp.Utils.*
 import kotlinx.android.synthetic.main.layout_cart.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.reflect.Type
 import java.text.DecimalFormat
-import java.util.ArrayList
 
-class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
+ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult, ExtraClick {
     var cartItems = ArrayList<CartItem>()
     var name=""
     var type=""
@@ -31,10 +31,13 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
     var decimalFormat=DecimalFormat("##.00")
     var resturantItemsSize=ArrayList<RestaurantMenItemsSize>()
     var subExtraItemsRecords=ArrayList<SubExtraItemsRecord>()
+    var itemExtraGroup=ArrayList<ItemExtraGroup>()
     var cartAdapter:CartAdapter?=null
     var size_type:String?=null
     var item_id:String?=null
     var food_item_size_id:String?=null
+   var   toppingItems=ArrayList<ToppingItems>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +119,19 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
                         total_price=price+toppings_sum
                     }
                 }
+                else{
+if(toppingItems.size>0){
+    for(toppings in toppingItems){
+        val topping_price =toppings.topping_price!!.toDouble()
+        toppings_sum+=topping_price
+        val toppingDao=cartDatabase.ToppingDao()
+        toppingDao!!.Insert(toppings)
+        total_price=price+toppings_sum
+    }
+}
+                }
             }
+
             if(total_price>0.0){
                 val cartitem=cartDao.getOrderItem(orderCartItem.item_name.toString())
                 cartitem.total_price=total_price.toString()
@@ -130,6 +145,7 @@ class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult {
 
 Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
             startActivity(Intent(this,CancelOrderActivity::class.java).putExtra("type",type))
+            finish()
 
         }
 
@@ -165,7 +181,7 @@ Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
     fun setAdapters(){
         txt_no_extra.visibility=View.GONE
           val linearLayoutManager=LinearLayoutManager(this)
-        cartAdapter=CartAdapter(subExtraItemsRecords,this)
+        cartAdapter=CartAdapter(itemExtraGroup.get(0).subExtraItemsRecord,itemExtraGroup,this,this)
         recyler_extras.adapter=cartAdapter
         recyler_extras.layoutManager=linearLayoutManager
     }
@@ -195,26 +211,32 @@ if(type.equals("extra_items", true)){
             var array=json.getJSONArray(0)
 
             if(array !=null && array.length()>0){
-                var subextrajson =array.getJSONObject(0)
-                if(subextrajson!=null) {
-                    Log.i("response", subextrajson.toString())
-
-                    var subextraItems = subextrajson.getJSONArray("subExtraItemsRecord")
-                    if (subextraItems != null && subextraItems.length() > 0) {
-                        if (subExtraItemsRecords.size > 0) {
-                            subExtraItemsRecords.clear()
-                        }
-                        Log.i("response", subextraItems.toString())
-                        val gson = Gson()
-                        val type = object : TypeToken<ArrayList<SubExtraItemsRecord>>() {}.type
-                        subExtraItemsRecords = gson.fromJson<ArrayList<SubExtraItemsRecord>>(subextraItems.toString(), type)
-                        if (subExtraItemsRecords != null && subExtraItemsRecords.size > 0) {
-
-                            setAdapters()
-                        }
-
-                    }
+                val gson=Gson();
+                val listType: Type = object : TypeToken<List<ItemExtraGroup?>?>() {}.type
+                itemExtraGroup= gson.fromJson<List<ItemExtraGroup?>>(array.toString(),listType) as ArrayList<ItemExtraGroup>
+                if(itemExtraGroup!=null && itemExtraGroup.size>0){
+                    setAdapters()
                 }
+//                var subextrajson =array.getJSONObject(0)
+//                if(subextrajson!=null) {
+//                    Log.i("response", subextrajson.toString())
+//
+//                    var subextraItems = subextrajson.getJSONArray("subExtraItemsRecord")
+//                    if (subextraItems != null && subextraItems.length() > 0) {
+//                        if (subExtraItemsRecords.size > 0) {
+//                            subExtraItemsRecords.clear()
+//                        }
+//                        Log.i("response", subextraItems.toString())
+//                        val gson = Gson()
+//                        val type = object : TypeToken<ArrayList<SubExtraItemsRecord>>() {}.type
+//                        subExtraItemsRecords = gson.fromJson<ArrayList<SubExtraItemsRecord>>(subextraItems.toString(), type)
+//                        if (subExtraItemsRecords != null && subExtraItemsRecords.size > 0) {
+//
+//                            setAdapters()
+//                        }
+//
+//                    }
+//                }
 
 //
                 }
@@ -287,4 +309,33 @@ if(type.equals("extra_items", true)){
         recyler_sizes.adapter=adapter
         recyler_sizes.layoutManager=horizontalmanager
     }
+
+     override fun ExtraClicked(food: String, food_price: String, food_id: Int, extraitems: ArrayList<SubExtraItemsRecord>) {
+         val toppingItem=ToppingItems()
+         toppingItem.item_id=item_id
+         toppingItem.topping_price=food_price
+         toppingItem.topping_name=food
+         toppingItem.topping_id=food_id
+         toppingItem.item_name=subItemRecords!!.RestaurantPizzaItemName
+
+if(toppingItems.contains(toppingItem)){
+   toppingItems.remove(toppingItem)
+   toppingItems.add(toppingItem)
 }
+         else{
+    var added = -1
+    for (i in 0 until extraitems.size) {
+        for (j in 0 until toppingItems.size) {
+            if (extraitems.get(i).ExtraID==toppingItems.get(j).topping_id) {
+                added = j
+                break
+            }
+        }
+    }
+    if(added>=0){
+        toppingItems.removeAt(added)
+    }
+    toppingItems.add(toppingItem)
+         }
+     }
+ }

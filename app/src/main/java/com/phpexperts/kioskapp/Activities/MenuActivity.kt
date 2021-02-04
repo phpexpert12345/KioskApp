@@ -50,11 +50,13 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
        val guestUser=DroidPrefs.get(this,"guest",GuestUser::class.java)
         val user=DroidPrefs.get(this,"user",User::class.java)
         if(!guestUser.phone.equals("")){
+            img_logout.visibility=View.GONE
             txt_user_name.text=guestUser.name
             txt_user_phone.text=guestUser.phone
         }
         else{
             if(user.CustomerId!=null){
+                img_logout.visibility=View.VISIBLE
                 txt_user_name.text=user.user_name
                 txt_user_phone.text=user.user_phone
             }
