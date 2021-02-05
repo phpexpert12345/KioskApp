@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,6 +25,7 @@ import com.phpexperts.kioskapp.Utils.Apis
 import com.phpexperts.kioskapp.Utils.CartDatabase
 import com.phpexperts.kioskapp.Utils.DroidPrefs
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
+import kotlinx.android.synthetic.main.layout_cart.*
 import kotlinx.android.synthetic.main.layout_menu_screen.*
 import org.json.JSONObject
 import java.util.*
@@ -251,11 +253,16 @@ setMenuAdapter()
         val adapter=MenuAdapter(subItemRecords,this, object:MenuAdapter.AddClciked{
             override fun Clicked(view: View, position: Int) {
                 val subItemRecords=subItemRecords.get(position)
-                val intent=Intent(this@MenuActivity, ActivityCart::class.java)
-                intent.putExtra("sub_item", subItemRecords )
-                intent.putExtra("type", type)
-                intent.putExtra("item_id",item_id)
-                startActivity(intent)
+                if(subItemRecords.sizeavailable.equals("yes",true)||subItemRecords.extraavailable.equals("yes",true)) {
+                    val intent = Intent(this@MenuActivity, ActivityCart::class.java)
+                    intent.putExtra("sub_item", subItemRecords)
+                    intent.putExtra("type", type)
+                    intent.putExtra("item_id", item_id)
+                    startActivity(intent)
+                }
+                else{
+                    AddtoDatabase(subItemRecords)
+                }
             }
         } )
         recyler_menu.adapter=adapter
@@ -292,6 +299,43 @@ txt_cart_number.setText(""+cartitems.size)
             txt_cart_number.visibility=View.GONE
 
         }
+
+    }
+    fun AddtoDatabase(subItemRecords: SubItemRecords){
+        val cartDatabse=CartDatabase.getDataBase(this)
+        val cartDao=cartDatabse!!.OrderCartDao()
+        val toppingDao=cartDatabse!!.ToppingDao()
+       val cart_item=cartDao!!.getOrderItem(subItemRecords.RestaurantPizzaItemName!!)
+        if(cart_item!=null){
+            val toppingItems=toppingDao!!.getToppingsbyItem(cart_item.item_name!!)
+            if(toppingItems.size>0){
+
+            }
+            else {
+                var quantity = cart_item.quantity
+                quantity = quantity + 1
+                cart_item.quantity=quantity
+                cartDao.Update(cart_item)
+            }
+        }
+        else{
+            val orderCartItem =OrderCartItem()
+            orderCartItem.item_name=subItemRecords!!.RestaurantPizzaItemName
+            orderCartItem.item_image=subItemRecords!!.food_Icon
+            orderCartItem.item_size_type=subItemRecords!!.RestaurantPizzaItemName
+
+
+                orderCartItem.item_size_id="0"
+
+            orderCartItem.item_price=subItemRecords.RestaurantPizzaItemPrice
+            orderCartItem.quantity=1
+            orderCartItem.total_price=subItemRecords.RestaurantPizzaItemPrice
+            cartDao.Insert(orderCartItem)
+        }
+        Toast.makeText(this,subItemRecords.RestaurantPizzaItemName+" "+"Added to Cart!!",Toast.LENGTH_SHORT).show()
+        UpdateCart()
+
+
 
     }
 

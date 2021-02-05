@@ -13,12 +13,12 @@
         android:id="@+id/txt_heading"/>
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_40sdp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_15sdp"
     android:layout_marginEnd="@dimen/_15sdp"
     android:layout_marginTop="@dimen/_5sdp"
     android:layout_marginBottom="@dimen/_5sdp"
-    android:padding="@dimen/_5sdp"
+    android:padding="@dimen/_8sdp"
     android:layout_below="@+id/txt_heading"
     android:id="@+id/relative_extra"
     android:background="@drawable/background_grey">
@@ -39,16 +39,18 @@
             android:src="@drawable/ic_palceholder"/>
     </RelativeLayout>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:textSize="18sp"
         android:maxLength="10"
         android:maxLines="1"
         android:ellipsize="end"
+        android:layout_toEndOf="@+id/img_extra_check"
+        android:layout_toStartOf="@+id/txt_extra_price"
         android:id="@+id/txt_extra_name"
         android:layout_marginEnd="@dimen/_5sdp"
-       android:layout_centerHorizontal="true"
+
         android:textColor="@color/black"
         android:text="Item Name"/>
     <RelativeLayout
@@ -89,7 +91,6 @@ android:layout_below="@+id/txt_extra_name"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="16sp"
-
         android:id="@+id/txt_extra_price"
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="true"

@@ -41,7 +41,9 @@ class ActivityThankYou : AppCompatActivity() {
                 txt_user_thank_you.text = getString(R.string.thank_you_txt)+" "+guestUser.name+"!"
             }
         }
-
+        img_back.setOnClickListener {
+            onBackPressed()
+        }
 
 
     }
@@ -76,4 +78,5 @@ class ActivityThankYou : AppCompatActivity() {
        KioskApplication.finish_activity=true
         finish()
     }
+
 }

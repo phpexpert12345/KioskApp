@@ -180,12 +180,20 @@ Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
 
     fun setAdapters(){
         txt_no_extra.visibility=View.GONE
+        if(itemExtraGroup.get(0).Food_addons_selection_Type.equals("Checkbox")){
+            txt_top_head.visibility=View.VISIBLE
+            txt_top_head.text=itemExtraGroup.get(0).Food_Group_Name
+        }
+        else{
+            txt_top_head.visibility=View.GONE
+        }
           val linearLayoutManager=LinearLayoutManager(this)
         cartAdapter=CartAdapter(itemExtraGroup.get(0).subExtraItemsRecord,itemExtraGroup,this,this)
         recyler_extras.adapter=cartAdapter
         recyler_extras.layoutManager=linearLayoutManager
     }
     fun getExtraItems(FoodItemSizeID:String){
+        progress_toppings.visibility=View.VISIBLE
         val kioskVolleyService=KioskVolleyService()
         food_item_size_id=FoodItemSizeID
         kioskVolleyService.url= Apis.BASE_URL+"phpexpert_food_items_extra.php"
@@ -204,6 +212,7 @@ Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
     override fun onResult(response: JSONObject, type: String) {
 if(type.equals("extra_items", true)){
      Log.i("response", response.toString())
+    progress_toppings.visibility=View.GONE
     if(response.has("Menu_ItemExtraGroup")){
         var json =response.getJSONArray("Menu_ItemExtraGroup")
         if(json.length()>0){

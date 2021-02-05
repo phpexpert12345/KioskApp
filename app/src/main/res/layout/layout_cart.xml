@@ -197,7 +197,8 @@ android:layout_below="@+id/relative_cart"
             android:layout_height="wrap_content"
             android:text="@string/condiments"
             android:textSize="25sp"
-
+            android:visibility="gone"
+            android:id="@+id/txt_top_head"
             android:textColor="@color/black"
            android:layout_marginStart="@dimen/_15sdp"
             android:gravity="center"/>

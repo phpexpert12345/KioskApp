@@ -20,7 +20,7 @@ class ExtraToppingAdapter(extraitems:ArrayList<SubExtraItemsRecord>,context:Cont
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExtraToppingViewHolder {
-        return ExtraToppingViewHolder(LayoutInflater.from(context).inflate(R.layout.extra_item_radio,null))
+        return ExtraToppingViewHolder(LayoutInflater.from(context).inflate(R.layout.extra_item_radio,parent,false))
     }
 
     override fun getItemCount(): Int {

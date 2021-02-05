@@ -28,7 +28,7 @@ class ToppingAdapter(toppingItems: ArrayList<ToppingItems>, context: Context) :R
 
     override fun onBindViewHolder(holder: ToppingViewHolder, position: Int) {
         val topping =toppingItems.get(position)
-        holder.itemView.txt_toppings.text=topping.topping_name
+        holder.itemView.txt_toppings.text="+"+topping.topping_name
         val price=topping.topping_price.toString().toDouble()
         holder.itemView.txt_toppings_price.text=context.getString(R.string.pound_symbol)+decimalFormat.format(price)
     }
