@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_menu_item_sec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Vegetarian Samosa"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp" />
+    <TextView
+        android:id="@+id/tv_menu_item_size"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/tv_menu_item_sec"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Vegetarian Samosa"
+        android:textColor="@color/color_add"
+        android:textSize="@dimen/_13sdp" />
+
+    <TextView
+        android:id="@+id/tv_menu_item_extra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_menu_item_size"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Vegetarian Samosa"
+        android:textColor="@color/cart_empty"
+        android:textSize="@dimen/_11sdp" />
+</RelativeLayout>

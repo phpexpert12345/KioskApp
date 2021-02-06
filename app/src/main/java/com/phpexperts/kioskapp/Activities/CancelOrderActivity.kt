@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.phpexperts.kioskapp.Adapters.CancelOrderAdapter
 import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
@@ -77,6 +79,11 @@ import kotlin.collections.HashMap
      var SalesTaxAmount=""
      var current_time=""
      lateinit var progressDialog:ProgressDialog
+     private var mealID = ""
+     private var mealquqntity = ""
+     private var mealPrice = ""
+     private var mealItemExtra = ""
+     private var mealItemOption = ""
 
 
      override fun onResume() {
@@ -245,6 +252,71 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                     override fun DeleteClicked(view: View, pos: Int) {
                         showDeleteDialog(orderCartItems.get(pos))
                     }
+
+                    override fun comquantityChanged(price: Double, type: Int, pos: Int) {
+                        val com_list = DroidPrefs.get(this@CancelOrderActivity, "com_list", String::class.java)
+                        if (com_list != null) {
+                            val gson = Gson()
+                            val listType = object : TypeToken<List<ComItemList?>?>() {}.type
+                            val comItemLists = gson.fromJson<List<ComItemList>>(com_list, listType)
+                            if (comItemLists != null) {
+if(comItemLists.size>0){
+    when (type) {
+
+        0 -> {
+            total_price -= price
+
+            var quantity=comItemLists.get(pos).quantity
+            quantity -= 1
+            comItemLists.get(pos).quantity=quantity
+            val gson = Gson()
+            val com = gson.toJson(comItemLists)
+            DroidPrefs.apply(this@CancelOrderActivity, "com_list", com)
+            getCartItemsfromDataBase()
+
+//
+        }
+
+        1 -> {
+            total_price += price
+            var quantity=comItemLists.get(pos).quantity
+            quantity += 1
+            comItemLists.get(pos).quantity=quantity
+            val com = gson.toJson(comItemLists)
+            DroidPrefs.apply(this@CancelOrderActivity, "com_list", com)
+            getCartItemsfromDataBase()
+        }
+
+    }
+
+    UpdateData()
+
+}
+                            }
+                        }
+                    }
+
+                    override fun comDeleteClicked(view: View, pos: Int) {
+                        val com_list = DroidPrefs.get(this@CancelOrderActivity, "com_list", String::class.java)
+                        if (com_list != null) {
+                            val gson = Gson()
+                            val listType = object : TypeToken<List<ComItemList?>?>() {}.type
+                            val comItemLists:MutableList<ComItemList> =
+                                gson.fromJson<List<ComItemList>>(com_list, listType).toMutableList()
+                            if (comItemLists != null) {
+                                if(comItemLists.size>0){
+                                    comItemLists.removeAt(pos);
+                                }
+                                val com = gson.toJson(comItemLists)
+                                DroidPrefs.apply(this@CancelOrderActivity, "com_list", com)
+                                getCartItemsfromDataBase()
+
+
+                            }
+
+                            }
+                    }
+
                 })
             recyler_new_orders.adapter = cancelOrderAdapter
             recyler_new_orders.layoutManager = linearLayoutManager
@@ -283,6 +355,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         val toppingDao=cartDatabase.ToppingDao()
         orderCartDao!!.DeleteAll()
         toppingDao!!.DeleteAll()
+        DroidPrefs.getDefaultInstance(this).clearkey("com_list")
         getCartItemsfromDataBase()
     }
 
@@ -573,6 +646,114 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
              cartDao = cartDatabase!!.OrderCartDao()
             toppingDao=cartDatabase!!.ToppingDao()
             orderCartItems = cartDao!!.getCartItems() as ArrayList<OrderCartItem>
+            //  tvTotalFoodCost.setText("+".concat(pound.concat("" + String.format("%.2f", totalPrice))));
+            //    tvTotalFoodCost.setText("+".concat(pound.concat("" +String.valueOf(totalPrice))));
+            // getDiscount();
+            val meal_quatity = java.lang.StringBuilder()
+            val meal_id = java.lang.StringBuilder()
+            val meal_price = java.lang.StringBuilder()
+            val meal_extra_opt = java.lang.StringBuilder()
+            val meal_item_extra = java.lang.StringBuilder()
+            var toatl_price = 0.0
+            val com_list = DroidPrefs.get(this, "com_list", String::class.java)
+            if (com_list != null) {
+                val gson = Gson()
+                val listType = object : TypeToken<List<ComItemList?>?>() {}.type
+                val comItemLists = gson.fromJson<List<ComItemList>>(com_list, listType)
+                if (comItemLists != null) {
+                    for (comItemList in comItemLists) {
+                        total_price+=comItemList.price!!.toDouble()*comItemList.quantity
+                        val item_ids: Array<String> = comItemList.ItemID!!.split(",").toTypedArray()
+                        val food_ids: Array<String> = comItemList.FoodItemSizeID!!.split(",").toTypedArray()
+                        val slot_id: Array<String> = comItemList.comboslot_id!!.split(",").toTypedArray()
+                        val comslot_item: Array<String> = comItemList.Combo_Slot_ItemID!!.split(",").toTypedArray()
+                        if (meal_item_extra.length > 0) {
+                            meal_item_extra.append("=")
+                        }
+                        if (meal_quatity.length > 0) {
+                            meal_quatity.append(",")
+                        }
+                        if (meal_price.length > 0) {
+                            meal_price.append(",")
+                        }
+                        if (meal_id.length > 0) {
+                            meal_id.append(",")
+                        }
+                        if (meal_extra_opt.length > 0) {
+                            meal_extra_opt.append("=")
+                        }
+                        meal_quatity.append(comItemList.quantity)
+                        meal_price.append(comItemList.price)
+                        meal_id.append(comItemList.deal_id)
+                        if (item_ids.size > 0) {
+                            for (i in item_ids.indices) {
+                                if (meal_extra_opt.length > 0) {
+                                    meal_extra_opt.append(",")
+                                }
+                                meal_extra_opt.append(slot_id[i])
+                                meal_extra_opt.append("_")
+                                meal_extra_opt.append(comslot_item[i])
+                                meal_extra_opt.append("_")
+                                meal_extra_opt.append(item_ids[i])
+                                meal_extra_opt.append("_")
+                                meal_extra_opt.append(food_ids[i])
+                                val com_tops: Array<String> = comItemList.combo_top_id!!.split(",").toTypedArray()
+                                if (com_tops.size > 0) {
+                                    for (j in com_tops.indices) {
+                                        if (i == j) {
+                                            val top_item = com_tops[j]
+                                            if (top_item.contains("_")) {
+                                                val s = top_item.split("_".toRegex()).toTypedArray()
+                                                for (t in s.indices) {
+                                                    if (meal_item_extra.length > 0) {
+                                                        meal_item_extra.append(",")
+                                                    }
+                                                    meal_item_extra.append(s[t])
+                                                    meal_item_extra.append("_")
+                                                    meal_item_extra.append(slot_id[i])
+                                                    meal_item_extra.append("_")
+                                                    meal_item_extra.append(comslot_item[i])
+                                                    meal_item_extra.append("_")
+                                                    meal_item_extra.append(item_ids[i])
+                                                    meal_item_extra.append("_")
+                                                    meal_item_extra.append(food_ids[i])
+                                                    meal_item_extra.append("_")
+                                                    meal_item_extra.append(slot_id[i])
+                                                    meal_item_extra.append("_")
+                                                    meal_item_extra.append(comItemList.deal_id)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+
+
+                    mealID = meal_id.toString()
+                    mealquqntity = meal_quatity.toString()
+                    mealPrice = meal_price.toString()
+                    mealItemOption = meal_extra_opt.toString()
+                    mealItemExtra = meal_item_extra.toString()
+                    Log.i("reason", "$mealID, $mealquqntity, $mealPrice, $mealItemOption, $mealItemExtra")
+                        val orderCartItem=OrderCartItem();
+                        orderCartItem.quantity=comItemList.quantity
+                        orderCartItem.item_name=comItemList.combo_name
+                        orderCartItem.item_size_type=comItemList.sec_value
+                        orderCartItem.total_price=comItemList.price
+                        orderCartItem.item_price=comItemList.price
+                        orderCartItem.quantity=comItemList.quantity
+                        orderCartItem.item_image=comItemList.com_sec
+                        orderCartItem.item_size_id=comItemList.combo_top
+                        orderCartItem.com=true
+                        orderCartItems.add(orderCartItem)
+
+//                        raviCartModles.add(RaviCartModle(comItemList.combo_name, comItemList.combo_name, comItemList.sec_value, comItemList.com_sec, "", comItemList.combo_top, comItemList.price, java.lang.String.valueOf(comItemList.quantity), comItemList.combo_desc, 1))
+                    }
+                }
+            }
             if(orderCartItems.size>0) {
 
                 setAdapters()
@@ -595,7 +776,6 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
             var extraItemid3 = StringBuilder()
             val extra_name = StringBuilder()
             if(orderCartItems.size>0){
-                var total_price =0.0
                 for(order in orderCartItems){
                     total_price+=order.total_price.toString().toDouble()*order.quantity
                     itemId.append(order.item_id)
@@ -663,6 +843,7 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
                 extraItemId2=Util.ConvertToBase64(extraItemId2)
                 Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID+" "+subTotalAmount+' '+FoodCosts+" "+extraItemId1+" "+extraItemId2);
             }
+
         }
 
         fun setDeliveryType(type: Int) {
@@ -884,6 +1065,11 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         params.put("TotalSavedDiscount","")
         params.put("discountOfferFreeItems","")
         params.put("OrderTimeType","0")
+        params.put("mealID",mealID)
+        params.put("mealquqntity",mealquqntity)
+        params.put("mealPrice",mealPrice)
+        params.put("mealItemExtra",mealItemExtra)
+        params.put("mealItemOption",mealItemOption)
         volleyService.CreateStringRequest(params)
 
 //        params.put("")

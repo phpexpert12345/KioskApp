@@ -14,4 +14,5 @@ class MenuCat {
     var category_description:String?=null
     var category_img:String?=null
     var subItemsRecord:ArrayList<SubItemRecords>?=null
+    var ComboList:ArrayList<ComboLists>?=null
 }

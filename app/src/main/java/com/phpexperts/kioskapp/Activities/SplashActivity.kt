@@ -53,6 +53,7 @@ class  SplashActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
                val toppingDao=cartDatabase.ToppingDao()
                cartDao!!.DeleteAll()
                toppingDao!!.DeleteAll()
+               DroidPrefs.getDefaultInstance(this).clearkey("com_list")
                startActivity(Intent(this@SplashActivity,CustomerInfoActivity::class.java))
            }
 

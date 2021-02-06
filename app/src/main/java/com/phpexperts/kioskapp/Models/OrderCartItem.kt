@@ -33,4 +33,8 @@ class OrderCartItem  :Serializable{
     @ColumnInfo(name="item_size_id")
     @SerializedName("item_size_id")
     var item_size_id:String?=null
+    @ColumnInfo(name = "is_com")
+    @SerializedName("is_com")
+    var com:Boolean=false
+
 }

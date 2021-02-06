@@ -70,6 +70,8 @@ Is this correct order.</string>
     <string name="enter_valid_password">Please enter valid password</string>
     <string name="pound_symbol">£</string>
     <string name="cart_added">Item have been added into cart.</string>
+    <string name="free_topp">You can select $ free toppings</string>
+    <string name="add_to_cart">Add to cart</string>
     <string name="order_type">Order Type</string>
     <string name="apply_coupon_code">Apply Coupon Code</string>
     <string name="redeem_loyalty_points">Redeem Loyalty Points</string>

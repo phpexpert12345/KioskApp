@@ -38,6 +38,8 @@
         <activity android:name=".Activities.ActivityThankYou" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.LoginActivity" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.ReaderActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ChooseComActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ComExtraActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

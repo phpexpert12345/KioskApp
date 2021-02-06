@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/white">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_com"
+        android:visibility="gone"/>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:id="@+id/relative_top">
+    <ImageView
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:src="@drawable/ic_arrow_back"
+        android:id="@+id/img_back"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_20sdp"
+        android:text="Choose Combo"
+        android:textStyle="bold"
+        android:id="@+id/txt_com_details"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relative_top"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/txt_com_name"
+        android:textStyle="bold"
+        android:text="hello"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_com_name"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/txt_com_desc"
+        android:text="hello"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/txt_com_desc"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/recyler_combo"
+       />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/recyler_combo"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_above="@+id/btn_add_to_cart"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/recyler_sec"
+       />
+    <TextView
+        android:id="@+id/btn_add_to_cart"
+       android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:layout_marginTop="10sp"
+        android:background="@color/color_orange"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:visibility="visible"
+        android:text="@string/add_to_cart"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        />
+</RelativeLayout>

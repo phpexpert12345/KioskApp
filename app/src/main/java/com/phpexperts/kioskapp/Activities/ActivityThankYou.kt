@@ -75,6 +75,7 @@ class ActivityThankYou : AppCompatActivity() {
         val toppingDao=cartDatabase.ToppingDao()
         cartDao!!.DeleteAll()
         toppingDao!!.DeleteAll()
+        DroidPrefs.getDefaultInstance(this).clearkey("com_list")
        KioskApplication.finish_activity=true
         finish()
     }

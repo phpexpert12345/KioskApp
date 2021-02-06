@@ -26,5 +26,6 @@ class SubItemRecords :Serializable {
     var Discount_Food_Amount:String?=null
     var RestaurantPizzaItemPrice:String?=null
     var sizeavailable:String?=null
+    var is_com:Boolean=false
 
 }
