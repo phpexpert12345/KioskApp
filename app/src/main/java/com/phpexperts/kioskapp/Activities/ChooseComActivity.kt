@@ -52,6 +52,9 @@ class ChooseComActivity:AppCompatActivity(),KioskVolleyService.KioskResult {
         btn_add_to_cart.setOnClickListener {
             SaveComboToDatabase()
         }
+        img_back.setOnClickListener {
+            finish()
+        }
         getComdetails()
     }
     fun getComdetails(){

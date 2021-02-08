@@ -98,6 +98,9 @@ import java.text.DecimalFormat
             }
             orderCartItem.item_price=price.toString()
             orderCartItem.quantity=txt_count.text.toString().toInt()
+            orderCartItem.com=false
+            orderCartItem.item_id=subItemRecords!!.ItemID
+            orderCartItem.deal_id=subItemRecords!!.ItemID
             val cartDatabase=CartDatabase.getDataBase(this)
             val cartDao=cartDatabase!!.OrderCartDao()
             cartDao!!.Insert(orderCartItem)

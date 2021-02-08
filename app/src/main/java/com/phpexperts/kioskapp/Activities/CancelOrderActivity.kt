@@ -296,25 +296,8 @@ if(comItemLists.size>0){
                         }
                     }
 
-                    override fun comDeleteClicked(view: View, pos: Int) {
-                        val com_list = DroidPrefs.get(this@CancelOrderActivity, "com_list", String::class.java)
-                        if (com_list != null) {
-                            val gson = Gson()
-                            val listType = object : TypeToken<List<ComItemList?>?>() {}.type
-                            val comItemLists:MutableList<ComItemList> =
-                                gson.fromJson<List<ComItemList>>(com_list, listType).toMutableList()
-                            if (comItemLists != null) {
-                                if(comItemLists.size>0){
-                                    comItemLists.removeAt(pos);
-                                }
-                                val com = gson.toJson(comItemLists)
-                                DroidPrefs.apply(this@CancelOrderActivity, "com_list", com)
-                                getCartItemsfromDataBase()
-
-
-                            }
-
-                            }
+                    override fun comDeleteClicked(view: View, pos: Int,extraitems:ArrayList<OrderCartItem>) {
+                        showComDeleteDialog(extraitems.get(pos))
                     }
 
                 })
@@ -332,6 +315,44 @@ if(comItemLists.size>0){
         val builder =AlertDialog.Builder(this).setMessage(getString(R.string.are_you_sure)+" "+orderCartItem.item_name+" "+getString(R.string.from_your_cart))
         builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
             DeleteCartItem(orderCartItem)
+            dialog.dismiss() }
+        builder.setNegativeButton(getString(R.string.cancel)){
+            dialog, which ->
+            dialog.dismiss()
+        }
+        builder.create().show()
+
+    }
+     fun showComDeleteDialog(orderCartItem: OrderCartItem){
+        val builder =AlertDialog.Builder(this).setMessage(getString(R.string.are_you_sure)+" "+orderCartItem.item_name+" "+getString(R.string.from_your_cart))
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
+            val com_list = DroidPrefs.get(this@CancelOrderActivity, "com_list", String::class.java)
+            if (com_list != null) {
+                val gson = Gson()
+                val listType = object : TypeToken<List<ComItemList?>?>() {}.type
+                val comItemLists:MutableList<ComItemList> =
+                        gson.fromJson<List<ComItemList>>(com_list, listType).toMutableList()
+                if (comItemLists != null) {
+                    if(comItemLists.size>0){
+                        var index=-1
+                        for(i in 0 until comItemLists.size){
+                            if(comItemLists.get(i).deal_id!!.toInt()==orderCartItem.deal_id){
+                                index=i
+
+                            }
+                        }
+                        if(index>=0) {
+                            comItemLists.removeAt(index)
+                        }
+                    }
+                    val com = gson.toJson(comItemLists)
+                    DroidPrefs.apply(this@CancelOrderActivity, "com_list", com)
+                    getCartItemsfromDataBase()
+
+
+                }
+
+            }
             dialog.dismiss() }
         builder.setNegativeButton(getString(R.string.cancel)){
             dialog, which ->
@@ -560,6 +581,10 @@ if(comItemLists.size>0){
             order_price = total_price - coupon_discount - loyalty_price + delivery_charge + tax - offer_price
             txt_total_count.text =
                     getString(R.string.pound_symbol) + decimalFormat.format(order_price)
+            if (total_price > 0.0) {
+                subTotalAmount = java.lang.String.valueOf(total_price)
+                FoodCosts = subTotalAmount
+            }
         }
         else {
             txt_total_count.text =
@@ -655,6 +680,7 @@ if(comItemLists.size>0){
             val meal_extra_opt = java.lang.StringBuilder()
             val meal_item_extra = java.lang.StringBuilder()
             var toatl_price = 0.0
+            total_price=0.0
             val com_list = DroidPrefs.get(this, "com_list", String::class.java)
             if (com_list != null) {
                 val gson = Gson()
@@ -662,7 +688,6 @@ if(comItemLists.size>0){
                 val comItemLists = gson.fromJson<List<ComItemList>>(com_list, listType)
                 if (comItemLists != null) {
                     for (comItemList in comItemLists) {
-                        total_price+=comItemList.price!!.toDouble()*comItemList.quantity
                         val item_ids: Array<String> = comItemList.ItemID!!.split(",").toTypedArray()
                         val food_ids: Array<String> = comItemList.FoodItemSizeID!!.split(",").toTypedArray()
                         val slot_id: Array<String> = comItemList.comboslot_id!!.split(",").toTypedArray()
@@ -748,6 +773,7 @@ if(comItemLists.size>0){
                         orderCartItem.item_image=comItemList.com_sec
                         orderCartItem.item_size_id=comItemList.combo_top
                         orderCartItem.com=true
+                        orderCartItem.deal_id=comItemList.deal_id!!.toInt()
                         orderCartItems.add(orderCartItem)
 
 //                        raviCartModles.add(RaviCartModle(comItemList.combo_name, comItemList.combo_name, comItemList.sec_value, comItemList.com_sec, "", comItemList.combo_top, comItemList.price, java.lang.String.valueOf(comItemList.quantity), comItemList.combo_desc, 1))
@@ -776,70 +802,101 @@ if(comItemLists.size>0){
             var extraItemid3 = StringBuilder()
             val extra_name = StringBuilder()
             if(orderCartItems.size>0){
-                for(order in orderCartItems){
-                    total_price+=order.total_price.toString().toDouble()*order.quantity
-                    itemId.append(order.item_id)
+
+                for(order in orderCartItems) {
+                    if (!order.com){
+                        itemId.append(order.item_id)
                     itemId.append(",")
                     quant.append(order.quantity)
                     quant.append(",")
-                    price_total.append(order.total_price!!.toDouble()*order.quantity)
+                    price_total.append(order.total_price!!.toDouble() * order.quantity)
                     price_total.append(",")
                     strsize_all.append(order.item_size_id)
                     strsize_all.append(",")
-                    val topping_list=toppingDao!!.getToppingsbyItem(order.item_name!!)
-                    if(topping_list.size>0){
-                        for(topping in topping_list){
+                    val topping_list = toppingDao!!.getToppingsbyItem(order.item_name!!)
+                    if (topping_list.size > 0) {
+                        for (topping in topping_list) {
                             var extra_id: String
                             extra_id = topping.topping_id.toString()
                             extraItemid3.append(extra_id.trim())
                             extraItemid3.append(",")
-                            extra_all.append(order.item_id.toString()+"_"+order.item_size_id+"_"+topping.topping_id.toString().trim())
+                            extra_all.append(order.item_id.toString() + "_" + order.item_size_id + "_" + topping.topping_id.toString().trim())
                             extra_all.append(",")
-                            extra_name.append("+"+topping.topping_name)
+                            extra_name.append("+" + topping.topping_name)
 
                         }
                         extra_name.append("_")
                         extra_all.append("_")
-                        if(extra_all.length>0){
-                            extra_all=extra_all.deleteCharAt(extra_all.lastIndexOf(","))
+                        if (extra_all.length > 0) {
+                            extra_all = extra_all.deleteCharAt(extra_all.lastIndexOf(","))
                         }
-                        if(extraItemid3.length>0){
-                            extraItemid3=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf(","))
+                        if (extraItemid3.length > 0) {
+                            extraItemid3 = extraItemid3.deleteCharAt(extraItemid3.lastIndexOf(","))
                         }
                         extraItemid3.append("_")
                     }
-
-
-
-                }
-                if (itemId.length > 0) {
-                    item_Id = itemId.deleteCharAt(itemId.lastIndexOf(",")).toString()
-                }
-                if (quant.length > 0) {
-                    quantity = quant.deleteCharAt(quant.lastIndexOf(",")).toString()
-                }
-                if (price_total.length > 0) {
-                    Price = price_total.deleteCharAt(price_total.lastIndexOf(",")).toString()
-                }
-                if (strsize_all.length > 0) {
-                    strsizeid = strsize_all.deleteCharAt(strsize_all.lastIndexOf(",")).toString()
-                }
-                if (extra_all.length > 0) {
-                    extraItemID = extra_all.deleteCharAt(extra_all.lastIndexOf("_")).toString()
-                }
-                if (total_price > 0.0) {
-                    subTotalAmount = java.lang.String.valueOf(total_price)
-                    FoodCosts = subTotalAmount
-                }
-                if(extraItemid3.length>0){
-                    extraItemId1=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf("_")).toString()
                 }
 
-                if(extra_name.length>0){
-                    extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString()
-                    extra_toppings=extraItemId2;
+                    }
+                    if (itemId.length > 0) {
+                        if(itemId.contains(",")) {
+                            item_Id = itemId.deleteCharAt(itemId.lastIndexOf(",")).toString()
+                        }
+                        else{
+                            item_Id=itemId.toString()
+                        }
+                    }
+                    if (quant.length > 0) {
+                        if(quant.contains(",")) {
+                            quantity = quant.deleteCharAt(quant.lastIndexOf(",")).toString()
+                        }
+                    }
+                    if (price_total.length > 0) {
+                        if(price_total.contains(",")) {
+                            Price = price_total.deleteCharAt(price_total.lastIndexOf(",")).toString()
+                        }
+                        else{
+                            Price=price_total.toString()
+                        }
+                    }
+                    if (strsize_all.length > 0) {
+                        if(strsize_all.contains(",")) {
+                            strsizeid = strsize_all.deleteCharAt(strsize_all.lastIndexOf(",")).toString()
+                        }
+                        else{
+                            strsizeid=strsize_all.toString()
+                        }
+                    }
+                    if (extra_all.length > 0) {
+                        if(extra_all.contains("_")) {
+                            extraItemID = extra_all.deleteCharAt(extra_all.lastIndexOf("_")).toString()
+                        }
+                        else{
+                            extraItemID=extra_all.toString()
+                        }
+                    }
 
-                }
+                    if (extraItemid3.length > 0) {
+                        if(extraItemid3.contains("_")) {
+                            extraItemId1 = extraItemid3.deleteCharAt(extraItemid3.lastIndexOf("_")).toString()
+                        }
+                        else{
+                            extraItemId1=extraItemid3.toString()
+                        }
+                    }
+
+                    if (extra_name.length > 0) {
+                        if(extra_name.contains("_")) {
+                            extraItemId2 = extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString()
+
+                        }
+                        else{
+                            extraItemId2=extra_name.toString()
+                        }
+                        extra_toppings = extraItemId2
+
+                    }
+
                 extraItemId2=Util.ConvertToBase64(extraItemId2)
                 Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID+" "+subTotalAmount+' '+FoodCosts+" "+extraItemId1+" "+extraItemId2);
             }

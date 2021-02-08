@@ -21,10 +21,7 @@ import com.phpexperts.kioskapp.Adapters.MenuAdapter
 import com.phpexperts.kioskapp.Adapters.SideMenuAdapter
 import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
-import com.phpexperts.kioskapp.Utils.Apis
-import com.phpexperts.kioskapp.Utils.CartDatabase
-import com.phpexperts.kioskapp.Utils.DroidPrefs
-import com.phpexperts.kioskapp.Utils.KioskVolleyService
+import com.phpexperts.kioskapp.Utils.*
 import kotlinx.android.synthetic.main.layout_menu_screen.*
 import org.json.JSONObject
 import java.util.*
@@ -238,7 +235,6 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                         }
                     }
                 }
-                item_id = menu_cat_list.get(position).id.toString()
                 if (subItemRecords.size > 0) {
                     setSubItemMenu()
                 }
@@ -279,7 +275,6 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                     val intent = Intent(this@MenuActivity, ActivityCart::class.java)
                     intent.putExtra("sub_item", subItemRecords)
                     intent.putExtra("type", type)
-                    intent.putExtra("item_id", item_id)
                     startActivity(intent)
                 } else if (!subItemRecords.is_com) {
                     AddtoDatabase(subItemRecords)
@@ -367,6 +362,9 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                 orderCartItem.item_price = subItemRecords.RestaurantPizzaItemPrice
                 orderCartItem.quantity = 1
                 orderCartItem.total_price = subItemRecords.RestaurantPizzaItemPrice
+                orderCartItem.com=false
+                orderCartItem.item_id=subItemRecords.ItemID
+                orderCartItem.deal_id=subItemRecords.ItemID
                 cartDao.Insert(orderCartItem)
             }
             Toast.makeText(this, subItemRecords.RestaurantPizzaItemName + " " + "Added to Cart!!", Toast.LENGTH_SHORT).show()
@@ -374,6 +372,11 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
 
 
         }
+
+    override fun onBackPressed() {
+        KioskApplication.finish_activity=true
+        finish()
+    }
 
 
     }

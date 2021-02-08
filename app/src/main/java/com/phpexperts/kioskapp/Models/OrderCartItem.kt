@@ -23,10 +23,10 @@ class OrderCartItem  :Serializable{
     @ColumnInfo(name="item_image")
     @SerializedName("item_image")
     var item_image:String?=null
-    @ColumnInfo(name="item_id")
-    @SerializedName("item_id")
+    @ColumnInfo(name="id")
+    @SerializedName("id")
     @PrimaryKey(autoGenerate = true)
-    var item_id :Int=0
+    var id :Int=0
     @ColumnInfo(name="total_price")
     @SerializedName("total_price")
     var total_price:String?=null
@@ -36,5 +36,11 @@ class OrderCartItem  :Serializable{
     @ColumnInfo(name = "is_com")
     @SerializedName("is_com")
     var com:Boolean=false
+    @ColumnInfo(name = "item_id")
+    @SerializedName("item_id")
+    var item_id:Int=0
+    @ColumnInfo(name = "deal_id")
+    @SerializedName("deal_id")
+    var deal_id=0
 
 }

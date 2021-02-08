@@ -37,7 +37,7 @@ class CancelOrderAdapter(extraitems:ArrayList<OrderCartItem>, context: Context,q
         fun quantityChanged(price:Double,type:Int, position: Int)
         fun DeleteClicked(view: View, pos:Int)
         fun comquantityChanged(price:Double,type:Int,pos: Int)
-        fun comDeleteClicked(view: View, pos:Int)
+        fun comDeleteClicked(view: View, pos:Int,extraitems:ArrayList<OrderCartItem>)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -175,7 +175,7 @@ val extraItem=extraitems.get(position)
                 var count = holder.itemView.txt_count.text.toString().toInt()
                 val pos = it.tag
                 if (count == 1) {
-                    quantity.comDeleteClicked(it, pos as Int)
+                    quantity.comDeleteClicked(it, pos as Int,extraitems)
                 } else {
                     count -= 1
                     var price = 0.0
@@ -216,7 +216,7 @@ val extraItem=extraitems.get(position)
             holder.itemView.img_delete.tag=position
             holder.itemView.img_delete.setOnClickListener {
                 val pos=it.tag
-                quantity.comDeleteClicked(it, pos as Int)
+                quantity.comDeleteClicked(it, pos as Int,extraitems)
             }
 
         }
