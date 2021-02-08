@@ -15,4 +15,7 @@ interface OrderCartDao {
     fun DeleteAll()
     @Query("select * from order_cart_item where item_name=:name")
     fun getOrderItem(name:String):OrderCartItem
+    @Query("select * from order_cart_item where item_name=:name and top_ids=:top_ids")
+    fun getOrderItemids(name:String,top_ids:String):OrderCartItem
+
 }

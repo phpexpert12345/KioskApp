@@ -18,8 +18,12 @@ import com.phpexperts.kioskapp.Utils.*
 import kotlinx.android.synthetic.main.layout_cart.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.StringBuilder
 import java.lang.reflect.Type
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
  class ActivityCart :AppCompatActivity(), KioskVolleyService.KioskResult, ExtraClick {
     var cartItems = ArrayList<CartItem>()
@@ -42,120 +46,179 @@ import java.text.DecimalFormat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_cart)
-        KioskApplication.finish_activity=false
-        if(intent.hasExtra("item_id")){
-            item_id=intent.getStringExtra("item_id");
+        KioskApplication.finish_activity = false
+        if (intent.hasExtra("item_id")) {
+            item_id = intent.getStringExtra("item_id");
 
 
         }
 //        setAdapters()
-        linear_amount.setOnClickListener{
+        linear_amount.setOnClickListener {
             finish()
         }
 
         txt_back.setOnClickListener {
             finish()
         }
-        img_back.setOnClickListener { 
+        img_back.setOnClickListener {
             finish()
         }
 
         img_less.setOnClickListener {
             var count = txt_count.text.toString().toInt()
-            if(count==0){
-                txt_count.text="0"
-                txt_order_amount.text="$15.00"
-            }
-            else {
-                count-=1
-                txt_count.text=count.toString()
+            if (count == 0) {
+                txt_count.text = "0"
+                txt_order_amount.text = "$15.00"
+            } else {
+                count -= 1
+                txt_count.text = count.toString()
 
-                 amount=count*price
-                txt_order_amount.text=getString(R.string.pound_symbol)+decimalFormat.format(amount)
+                amount = count * price
+                txt_order_amount.text =
+                    getString(R.string.pound_symbol) + decimalFormat.format(amount)
             }
         }
         img_more.setOnClickListener {
-            var count=txt_count.text.toString().toInt()
-            count+=1
-            txt_count.text=count.toString()
-            amount=count*price
+            var count = txt_count.text.toString().toInt()
+            count += 1
+            txt_count.text = count.toString()
+            amount = count * price
 
-            txt_order_amount.text=getString(R.string.pound_symbol)+decimalFormat.format(amount)
+            txt_order_amount.text = getString(R.string.pound_symbol) + decimalFormat.format(amount)
         }
         Init()
 
         txt_continue.setOnClickListener {
-            var total_price =0.0
-            val orderCartItem =OrderCartItem()
-            orderCartItem.item_name=subItemRecords!!.RestaurantPizzaItemName
-            orderCartItem.item_image=subItemRecords!!.food_Icon
-            orderCartItem.item_size_type=size_type
-            if(food_item_size_id!=null) {
-                orderCartItem.item_size_id = food_item_size_id
-            }
-            else {
-                orderCartItem.item_size_id="0"
-            }
-            orderCartItem.item_price=price.toString()
-            orderCartItem.quantity=txt_count.text.toString().toInt()
-            orderCartItem.com=false
-            orderCartItem.item_id=subItemRecords!!.ItemID
-            orderCartItem.deal_id=subItemRecords!!.ItemID
-            val cartDatabase=CartDatabase.getDataBase(this)
-            val cartDao=cartDatabase!!.OrderCartDao()
-            cartDao!!.Insert(orderCartItem)
-            if(cartAdapter!=null){
-                var toppings_sum =0.0
-                val selected_toppings=cartAdapter!!.selected_items
-                Log.i("response", toppings_sum.toString())
-                if(selected_toppings.size>0){
-                    for(toppings in selected_toppings){
-                        val topping_price =toppings.Food_Price_Addons!!.toDouble()
-                        toppings_sum+=topping_price
-                        val toppingItems =ToppingItems()
-                        toppingItems.topping_name=toppings.Food_Addons_Name
-                        toppingItems.topping_price=toppings.Food_Price_Addons
-                        toppingItems.item_name=subItemRecords!!.RestaurantPizzaItemName
-                        toppingItems.item_id=item_id
-                        val toppingDao=cartDatabase.ToppingDao()
-                        toppingDao!!.Insert(toppingItems)
-                        total_price=price+toppings_sum
+            var total_price = 0.0
+            var toppings_sum = 0.0
+            val cartDatabase = CartDatabase.getDataBase(this)
+            val cartDao = cartDatabase!!.OrderCartDao()
+            val cartItem = cartDao!!.getCartItems()
+            val toppingDao = cartDatabase.ToppingDao()
+            val tops = StringBuilder()
+
+            if (cartAdapter!!.selected_items.size > 0) {
+                for (i in 0 until cartAdapter!!.selected_items.size) {
+                    if (tops.length > 0) {
+                        tops.append(",")
                     }
+                    tops.append(cartAdapter!!.selected_items.get(i).ExtraID.toString())
+
                 }
-                else{
-if(toppingItems.size>0){
-    for(toppings in toppingItems){
-        val topping_price =toppings.topping_price!!.toDouble()
-        toppings_sum+=topping_price
-        val toppingDao=cartDatabase.ToppingDao()
-        toppingDao!!.Insert(toppings)
-        total_price=price+toppings_sum
-    }
-}
+            } else if (toppingItems.size > 0) {
+                for (i in 0 until toppingItems.size) {
+                    if (tops.length > 0) {
+                        tops.append(",")
+                    }
+                    tops.append(toppingItems.get(i).topping_id.toString())
+
                 }
+            }
+            val cartitem = cartDao.getOrderItemids(
+                subItemRecords!!.RestaurantPizzaItemName.toString(),
+                tops.toString()
+            )
+            if (cartitem != null) {
+                UpdateCartItem(cartitem)
+            } else {
+                AddCartitem()
             }
 
-            if(total_price>0.0){
-                val cartitem=cartDao.getOrderItem(orderCartItem.item_name.toString())
-                cartitem.total_price=total_price.toString()
-                cartDao.Update(cartitem)
-            }
-            else{
-                val cartitem=cartDao.getOrderItem(orderCartItem.item_name.toString())
-                cartitem.total_price=price.toString()
-                cartDao.Update(cartitem)
-            }
-
-Toast.makeText(this,getString(R.string.cart_added),Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this,CancelOrderActivity::class.java).putExtra("type",type))
-            finish()
 
         }
-
-
-
-
     }
+     fun AddCartitem(){
+         var total_price = 0.0
+         var toppings_sum = 0.0
+         val topp_ids=StringBuilder()
+         val cartDatabase = CartDatabase.getDataBase(this)
+         val cartDao = cartDatabase!!.OrderCartDao()
+         val cartItem = cartDao!!.getCartItems()
+         val toppingDao = cartDatabase.ToppingDao()
+         val orderCartItem = OrderCartItem()
+         orderCartItem.item_name = subItemRecords!!.RestaurantPizzaItemName
+         orderCartItem.item_image = subItemRecords!!.food_Icon
+         orderCartItem.item_size_type = size_type
+         if (food_item_size_id != null) {
+             orderCartItem.item_size_id = food_item_size_id
+         } else {
+             orderCartItem.item_size_id = "0"
+         }
+         orderCartItem.item_price = price.toString()
+         orderCartItem.quantity = txt_count.text.toString().toInt()
+         orderCartItem.com = false
+         orderCartItem.item_id = subItemRecords!!.ItemID
+         orderCartItem.deal_id = subItemRecords!!.ItemID
+         cartDao!!.Insert(orderCartItem)
+         if (cartAdapter != null) {
+             var toppings_sum = 0.0
+             val selected_toppings = cartAdapter!!.selected_items
+             Log.i("response", toppings_sum.toString())
+             if (selected_toppings.size > 0) {
+                 for (toppings in selected_toppings) {
+                     if(topp_ids.length>0){
+                         topp_ids.append(",")
+                     }
+                     val topping_price = toppings.Food_Price_Addons!!.toDouble()
+                     toppings_sum += topping_price
+                     val toppingItems = ToppingItems()
+                     toppingItems.topping_name = toppings.Food_Addons_Name
+                     toppingItems.topping_price = toppings.Food_Price_Addons
+                     toppingItems.item_name = subItemRecords!!.RestaurantPizzaItemName
+                     toppingItems.item_id = subItemRecords!!.ItemID.toString()
+                     toppingItems.topping_id=toppings.ExtraID
+                     topp_ids.append(toppings.ExtraID)
+                     val toppingDao = cartDatabase.ToppingDao()
+                     toppingDao!!.Insert(toppingItems)
+                     total_price = price + toppings_sum
+                 }
+             } else {
+                 if (toppingItems.size > 0) {
+                     for (toppings in toppingItems) {
+                         if(topp_ids.length>0){
+                             topp_ids.append(",")
+                         }
+                         val topping_price = toppings.topping_price!!.toDouble()
+                         toppings_sum += topping_price
+                         val toppingDao = cartDatabase.ToppingDao()
+                         topp_ids.append(toppings.topping_id)
+                         toppingDao!!.Insert(toppings)
+                         total_price = price + toppings_sum
+                     }
+                 }
+             }
+         }
+         if (total_price > 0.0) {
+             val cartitem = cartDao.getOrderItem(subItemRecords!!.RestaurantPizzaItemName.toString())
+             cartitem.total_price = total_price.toString()
+             if(topp_ids.length>0){
+                 cartitem.top_ids=topp_ids.toString()
+             }
+             cartDao.Update(cartitem)
+         } else {
+             val cartitem = cartDao.getOrderItem(subItemRecords!!.RestaurantPizzaItemName.toString())
+             cartitem.total_price = price.toString()
+             if(topp_ids.length>0){
+                 cartitem.top_ids=topp_ids.toString()
+             }
+             cartDao.Update(cartitem)
+         }
+//         Toast.makeText(this, getString(R.string.cart_added), Toast.LENGTH_SHORT).show()
+//         startActivity(Intent(this, CancelOrderActivity::class.java).putExtra("type", type))
+//         finish()
+
+     }
+     fun UpdateCartItem(cartItem: OrderCartItem){
+         var quantity = cartItem.quantity
+         quantity += quantity
+         cartItem.quantity = quantity
+         val cartDatabase = CartDatabase.getDataBase(this)
+         val cartDao = cartDatabase!!.OrderCartDao()
+         cartDao!!.Update(cartItem)
+         Toast.makeText(this, getString(R.string.item_plus), Toast.LENGTH_SHORT).show()
+         startActivity(Intent(this, CancelOrderActivity::class.java).putExtra("type", type))
+         finish()
+     }
 
     override fun onResume() {
         super.onResume()

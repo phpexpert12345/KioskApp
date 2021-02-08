@@ -25,14 +25,27 @@ fun bind(menuItem: SubItemRecords,context: Context,addClciked: AddClciked) {
     itemView.txt_menu_title.text = menuItem.RestaurantPizzaItemName
     itemView.txt_menu_price.text = context.getString(R.string.pound_symbol) + menuItem.RestaurantPizzaItemPrice
     if (!menuItem.RestaurantPizzaItemOldPrice.equals("")){
+        itemView.txt_discounted_price.visibility=View.VISIBLE
         itemView.txt_discounted_price.text = context.getString(R.string.pound_symbol) + menuItem.RestaurantPizzaItemOldPrice
 }
     else{
+        itemView.txt_discounted_price.visibility=View.GONE
         itemView.txt_discounted_price.text = context.getString(R.string.pound_symbol) + "0.00"
     }
 
     itemView.txt_discounted_price.setPaintFlags(itemView.txt_discounted_price.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
     Glide.with(context).load(menuItem.food_Icon).placeholder(R.drawable.ic_palceholder).into(itemView.img_menu_item)
+    if(!menuItem.Food_Type_Non.equals("")){
+        itemView.img_veg.visibility=View.VISIBLE
+        itemView.img_veg.setImageResource(R.drawable.ic_veg)
+    }
+    else if(!menuItem.Food_Type.equals("")){
+        itemView.img_veg.visibility=View.VISIBLE
+        itemView.img_veg.setImageResource(R.drawable.ic_veg)
+    }
+    else{
+        itemView.img_veg.visibility=View.GONE
+    }
     itemView.relative_menu.setTag(adapterPosition)
     itemView.relative_menu.setOnClickListener{
         val pos=it.tag

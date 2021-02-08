@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-@Entity(tableName = "order_cart_item", indices = arrayOf(Index(value = ["item_name"],unique = true)))
+@Entity(tableName = "order_cart_item", indices = arrayOf(Index(value = ["item_name"],unique = false)))
 class OrderCartItem  :Serializable{
     @ColumnInfo(name="item_name")
     @SerializedName("item_name")
@@ -33,14 +33,17 @@ class OrderCartItem  :Serializable{
     @ColumnInfo(name="item_size_id")
     @SerializedName("item_size_id")
     var item_size_id:String?=null
-    @ColumnInfo(name = "is_com")
-    @SerializedName("is_com")
+    @ColumnInfo(name = "com")
+    @SerializedName("com")
     var com:Boolean=false
     @ColumnInfo(name = "item_id")
     @SerializedName("item_id")
     var item_id:Int=0
     @ColumnInfo(name = "deal_id")
     @SerializedName("deal_id")
-    var deal_id=0
+    var deal_id:Int=0
+    @ColumnInfo(name = "top_ids")
+    @SerializedName("top_ids")
+    var top_ids=""
 
 }

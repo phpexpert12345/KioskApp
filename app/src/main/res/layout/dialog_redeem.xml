@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
+        android:visibility="gone"
         android:id="@+id/relative_cart"
         >
         <ImageView
@@ -39,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_redeem"
         android:textSize="25sp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/txt_coupon_code"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_25sdp"
@@ -64,7 +66,7 @@
             android:textColor="@color/black"
             android:textColorHint="@color/cart_empty"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:hint="@string/coupon_code"
+            android:hint="@string/coupon"
             android:background="@drawable/background_edit_grey"/>
         <TextView
             android:layout_width="match_parent"

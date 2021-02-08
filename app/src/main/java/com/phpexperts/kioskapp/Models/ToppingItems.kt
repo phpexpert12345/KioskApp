@@ -19,8 +19,11 @@ class ToppingItems {
     var item_name :String?=null
     @ColumnInfo(name = "topping_id")
     @SerializedName("topping_id")
-    @PrimaryKey(autoGenerate = true)
     var topping_id :Int=0
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
+    @PrimaryKey(autoGenerate = true)
+    var id=0
     @ColumnInfo(name="item_id")
     @SerializedName("item_id")
     var item_id:String?=null

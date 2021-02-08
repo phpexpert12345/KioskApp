@@ -209,6 +209,7 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
             Log.i("response", response.toString())
             if (response.has("restaurant_Logo")) {
                 val restaurant_Logo = response.getString("restaurant_Logo")
+                Log.i("url",restaurant_Logo)
                 if (restaurant_Logo != null) {
                     Glide.with(this).load(restaurant_Logo).placeholder(R.mipmap.ic_launcher).into(img_logo)
                 }
@@ -364,7 +365,7 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                 val orderCartItem = OrderCartItem()
                 orderCartItem.item_name = subItemRecords!!.RestaurantPizzaItemName
                 orderCartItem.item_image = subItemRecords!!.food_Icon
-                orderCartItem.item_size_type = subItemRecords!!.RestaurantPizzaItemName
+                orderCartItem.item_size_type = ""
 
 
                 orderCartItem.item_size_id = "0"
@@ -375,6 +376,7 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                 orderCartItem.com=false
                 orderCartItem.item_id=subItemRecords.ItemID
                 orderCartItem.deal_id=subItemRecords.ItemID
+                orderCartItem.top_ids=""
                 cartDao.Insert(orderCartItem)
             }
             Toast.makeText(this, subItemRecords.RestaurantPizzaItemName + " " + "Added to Cart!!", Toast.LENGTH_SHORT).show()

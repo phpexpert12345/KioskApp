@@ -34,6 +34,7 @@
         android:layout_height="@dimen/_10sdp"
         android:layout_alignParentEnd="true"
         android:elevation="@dimen/_10sdp"
+        android:id="@+id/img_veg"
         android:src="@drawable/ic_veg"/>
 
         <ImageView

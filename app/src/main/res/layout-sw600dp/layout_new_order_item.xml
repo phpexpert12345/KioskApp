@@ -69,6 +69,7 @@
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:src="@drawable/ic_veg"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_10sdp"/>
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView

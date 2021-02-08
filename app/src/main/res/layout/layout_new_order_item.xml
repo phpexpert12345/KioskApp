@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 <RelativeLayout
-    android:layout_width="@dimen/_80sdp"
-    android:layout_height="@dimen/_80sdp"
+    android:layout_width="@dimen/_60sdp"
+    android:layout_height="@dimen/_60sdp"
     android:background="@drawable/background_grey"
     android:id="@+id/relative_dish_image"
     android:layout_margin="@dimen/_15sdp"
@@ -73,6 +73,7 @@
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:src="@drawable/ic_veg"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_10sdp"/>
 
             </LinearLayout>

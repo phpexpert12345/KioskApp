@@ -11,10 +11,13 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.phpexperts.kioskapp.Adapters.CancelOrderAdapter
@@ -632,8 +635,10 @@ if(comItemLists.size>0){
     }
 
         fun showRedeemDialog() {
-            val builder = AlertDialog.Builder(this)
             val view = layoutInflater.inflate(R.layout.dialog_redeem, null)
+// var bottomSheetBehavior= BottomSheetBehavior<RelativeLayout>()
+//            bottomSheetBehavior = BottomSheetBehavior.from(view.)
+            val builder = AlertDialog.Builder(this)
             builder.setView(view)
              alertDialog = builder.create()
             alertDialog!!.show()
@@ -1060,7 +1065,7 @@ if(comItemLists.size>0){
         val params=HashMap<String,String>()
         params.put("api_key", userInfo.api_key.toString())
         params.put("lang_code", userInfo.customer_default_langauge.toString())
-        params.put("payment_type","Cash")
+        params.put("payment_type","Credit_Debit")
         params.put("order_price", order_price.toString())
         params.put("subTotalAmount", total_price.toString())
         params.put("delivery_date", current_date)
