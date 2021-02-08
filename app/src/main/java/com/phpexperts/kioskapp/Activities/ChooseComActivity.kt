@@ -13,6 +13,7 @@ import com.phpexperts.kioskapp.Adapters.ComValueAdapter
 import com.phpexperts.kioskapp.Adapters.ComboSectionAdapter
 import com.phpexperts.kioskapp.Models.*
 import com.phpexperts.kioskapp.R
+import com.phpexperts.kioskapp.Utils.Apis
 import com.phpexperts.kioskapp.Utils.DroidPrefs
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
 import com.phpexperts.kioskapp.Utils.SelectSec
@@ -63,7 +64,7 @@ class ChooseComActivity:AppCompatActivity(),KioskVolleyService.KioskResult {
         volleyService.type="com_details"
         volleyService.context=this
         volleyService.kioskResult=this
-        volleyService.url= "https://www.lieferadeal.de/WebAppAPI/phpexpert_combo_detail.php"
+        volleyService.url= Apis.BASE_URL+"phpexpert_combo_detail.php"
         Log.i("url",volleyService.url!!)
         val userInfo= DroidPrefs.get(this,"userinfo", UserInfo::class.java)
         val params=HashMap<String,String>()

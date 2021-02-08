@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
             else if(edit_password.text.toString().isEmpty()){
                 Toast.makeText(this,getString(R.string.enter_password),Toast.LENGTH_SHORT).show()
             }
-            else if(edit_password.text.toString().length<5){
+            else if(edit_password.text.toString().length<3){
                 Toast.makeText(this,getString(R.string.enter_valid_password), Toast.LENGTH_SHORT).show()
             }
             else {
@@ -78,6 +78,9 @@ class LoginActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
                     startActivity(Intent(this, OrderTypeActivity::class.java).putExtra("name", user.user_name).putExtra("phone", user.user_phone))
                     finish()
                 }
+            }
+            else{
+                Toast.makeText(this,response.getString("success_msg"),Toast.LENGTH_SHORT).show()
             }
 
         }

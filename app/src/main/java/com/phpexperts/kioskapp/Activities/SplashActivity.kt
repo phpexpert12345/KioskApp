@@ -26,6 +26,7 @@ class  SplashActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
         progress_splash.visibility= View.VISIBLE
         val kioskVolleyService=KioskVolleyService()
         kioskVolleyService.url= Apis.BASE_URL+"phpexpert_first_call_api.php"
+        Log.i("url",kioskVolleyService.url!!)
         val jsonObject=JSONObject()
         kioskVolleyService.params=jsonObject
         kioskVolleyService.type="first_call"
@@ -54,6 +55,7 @@ class  SplashActivity : AppCompatActivity(), KioskVolleyService.KioskResult {
                cartDao!!.DeleteAll()
                toppingDao!!.DeleteAll()
                DroidPrefs.getDefaultInstance(this).clearkey("com_list")
+               DroidPrefs.getDefaultInstance(this).clearkey("guest")
                startActivity(Intent(this@SplashActivity,CustomerInfoActivity::class.java))
            }
 

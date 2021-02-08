@@ -15,6 +15,7 @@ import com.phpexperts.kioskapp.Models.SubExtraItemsRecord
 import com.phpexperts.kioskapp.Models.ToppingItems
 import com.phpexperts.kioskapp.Models.UserInfo
 import com.phpexperts.kioskapp.R
+import com.phpexperts.kioskapp.Utils.Apis
 import com.phpexperts.kioskapp.Utils.DroidPrefs
 import com.phpexperts.kioskapp.Utils.ExtraClick
 import com.phpexperts.kioskapp.Utils.KioskVolleyService
@@ -128,7 +129,7 @@ if(i>=free_allowed){
         volleyService.type="com_extra_details"
         volleyService.context=this
         volleyService.kioskResult=this
-        volleyService.url= "https://www.lieferadeal.de/WebAppAPI/phpexpert_food_combo_items_extra.php"
+        volleyService.url= Apis.BASE_URL+"phpexpert_food_combo_items_extra.php"
         Log.i("url",volleyService.url!!)
         val userInfo= DroidPrefs.get(this,"userinfo", UserInfo::class.java)
         val params=HashMap<String,String>()

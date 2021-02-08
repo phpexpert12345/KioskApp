@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/order_here"
+        android:visibility="gone"
         android:textAllCaps="true"
         android:textSize="100sp"
         android:textStyle="bold"

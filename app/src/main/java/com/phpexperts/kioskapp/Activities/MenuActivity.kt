@@ -48,12 +48,12 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
         val guestUser = DroidPrefs.get(this, "guest", GuestUser::class.java)
         val user = DroidPrefs.get(this, "user", User::class.java)
         if (!guestUser.phone.equals("")) {
-            img_logout.visibility = View.GONE
+            relative_logout.visibility = View.GONE
             txt_user_name.text = guestUser.name
             txt_user_phone.text = guestUser.phone
         } else {
             if (user.CustomerId != null) {
-                img_logout.visibility = View.VISIBLE
+                relative_logout.visibility = View.VISIBLE
                 txt_user_name.text = user.user_name
                 txt_user_phone.text = user.user_phone
             }
@@ -145,6 +145,8 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
         kioskVolleyService.url = Apis.BASE_URL + "phpexpert_all_category_list.php"
         kioskVolleyService.context = this
         kioskVolleyService.type = "all_categories"
+        val url=Apis.BASE_URL + "phpexpert_all_category_list.php?resid="+userInfo.resid!!+"&lang_code="+userInfo.customer_default_langauge+"&api_key="+userInfo.api_key
+        Log.i("url",url)
         kioskVolleyService.kioskResult = this
         kioskVolleyService.CreateStringRequest(params)
     }
@@ -172,6 +174,7 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
             progress_menu.visibility = View.GONE
             Log.i("response", response.toString())
             if (response.has("Menu_Cat")) {
+                txt_no_data.visibility=View.GONE
                 if (menu_cat_list.size > 0) {
                     menu_cat_list.clear()
                 }
@@ -186,6 +189,10 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                     txt_menu.text = menu_cat_list.get(0).category_name
                     setSubItemMenu()
                 }
+            }
+            else{
+                txt_no_data.text=response.optString("error_msg")
+                txt_no_data.visibility=View.VISIBLE
             }
         } else if (type.equals("banners", true)) {
             Log.i("response", response.toString())
@@ -203,9 +210,12 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
             if (response.has("restaurant_Logo")) {
                 val restaurant_Logo = response.getString("restaurant_Logo")
                 if (restaurant_Logo != null) {
-                    Glide.with(this).load(restaurant_Logo).into(img_logo)
+                    Glide.with(this).load(restaurant_Logo).placeholder(R.mipmap.ic_launcher).into(img_logo)
                 }
             }
+        }
+        else{
+
         }
     }
 

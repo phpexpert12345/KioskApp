@@ -58,9 +58,19 @@ class KioskVolleyService {
                                Log.i("response",jsonObject.toString())
                                kioskResult!!.onResult(jsonObject,type!!)
                            }
+                           else{
+                               val jsonObject=JSONObject()
+                               jsonObject.put("error","1")
+                               jsonObject.put("error_msg","Url valid-")
+                               kioskResult!!.onResult(jsonObject,type!!)
+
+                           }
 
                        } catch (e: Exception) {
-
+                           val jsonObject=JSONObject()
+                           jsonObject.put("error","1")
+                           jsonObject.put("error_msg","Url valid-")
+                           kioskResult!!.onResult(jsonObject,type!!)
                        }
                    }
 

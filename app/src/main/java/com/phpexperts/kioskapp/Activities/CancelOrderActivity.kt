@@ -388,9 +388,11 @@ if(comItemLists.size>0){
                 }
             }
             else if(type.equals("payment_key")){
-                val token_secret=response.getJSONObject("token_secret")
-                if(token_secret.length()>0){
-                    payment_key=token_secret.getString("secret")
+                if(response.has("token_secret")) {
+                    val token_secret = response.getJSONObject("token_secret")
+                    if (token_secret.length() > 0) {
+                        payment_key = token_secret.getString("secret")
+                    }
                 }
 //                val stripe_publishKey=response.getString("stripe_publishKey")
 //                if(stripe_publishKey!=null){
@@ -543,6 +545,9 @@ if(comItemLists.size>0){
                         }
 
                     }
+                }
+                else{
+                    Toast.makeText(this,response.getString("error_msg"),Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -944,6 +949,7 @@ if(comItemLists.size>0){
         val volleyService=KioskVolleyService()
         volleyService.context=this
         volleyService.url=Apis.BASE_URL+"phpexpert_payment_generate_token.php"
+        Log.i("url",volleyService.url!!)
         volleyService.type="payment_key"
         volleyService.kioskResult=this
         val userInfo=DroidPrefs.get(this,"userinfo",UserInfo::class.java)
@@ -1036,12 +1042,12 @@ if(comItemLists.size>0){
         volleyService.type="place_order"
         if(user.CustomerId!=null){
 
-            volleyService.url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit.php"
+            volleyService.url=Apis.BASE_URL+"phpexpert_payment_android_submit.php"
 
         }
         else {
 
-            volleyService.url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit_guest.php"
+            volleyService.url=Apis.BASE_URL+"phpexpert_payment_android_submit_guest.php"
         }
         volleyService.context=this
         volleyService.kioskResult=this
@@ -1175,6 +1181,7 @@ if(comItemLists.size>0){
          params.put("lang_code", userInfo.customer_default_langauge.toString())
          params.put("amount", order_price.toString())
          params.put("currency", userInfo.customer_currency.toString())
+         Log.i("url",kioskVolleyService.url!!)
          kioskVolleyService.CreateStringRequest(params)
      }
 
