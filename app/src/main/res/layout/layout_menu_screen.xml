@@ -25,7 +25,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/banner_slider"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_100sdp"
+                android:layout_height="@dimen/_120sdp"
                 android:visibility="visible" />
 
 
@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/relative_user"
                    android:layout_toEndOf="@+id/linear_logo"
                     android:text="@string/breakfast_menu"
                     android:maxLength="18"
@@ -77,6 +78,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/relative_user"
                     android:layout_marginStart="@dimen/_12sdp"
 
                    >
@@ -149,7 +151,6 @@
                 tools:listitem="@layout/layout_menu_item"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_toEndOf="@+id/linear_side_menu"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_height="wrap_content"/>
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"

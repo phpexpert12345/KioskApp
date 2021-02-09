@@ -59,7 +59,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_toStartOf="@+id/relative_user"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/linear_logo"
@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:id="@+id/relative_user"
                 android:layout_alignParentEnd="true"
                 >
                 <ImageView
@@ -136,7 +137,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/scroll_bottom"
             android:layout_below="@+id/relative_logo"
-            android:layout_marginStart="17dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="-933dp"
             android:layout_toEndOf="@+id/linear_side_menu"

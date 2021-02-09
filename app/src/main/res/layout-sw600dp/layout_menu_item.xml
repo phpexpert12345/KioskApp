@@ -92,6 +92,37 @@
                 android:text="Add"
                 android:textColor="@color/color_add"
                 android:textSize="20sp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:padding="@dimen/_4sdp"
+
+                android:id="@+id/relative_menu_count"
+                android:background="@drawable/background_grey_filled"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:id="@+id/txt_menu_count"
+                    android:textSize="16sp"
+
+                    android:text="1"
+                    android:layout_centerInParent="true"/>
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:id="@+id/img_less"
+                    android:src="@drawable/ic_minus"/>
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/img_more"
+                    android:src="@drawable/ic_plus"/>
+            </RelativeLayout>
 
 
         </RelativeLayout>

@@ -11,13 +11,12 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.phpexperts.kioskapp.Adapters.CancelOrderAdapter
@@ -368,8 +367,20 @@ if(comItemLists.size>0){
         val cartDatabase=CartDatabase.getDataBase(this)
         val orderCartDao =cartDatabase!!.OrderCartDao()
         val toppingDao=cartDatabase.ToppingDao()
-        orderCartDao!!.DeleteCartitem(orderCartItem.item_name.toString())
-        toppingDao!!.DeleteToppingByItemName(orderCartItem.item_name.toString())
+        orderCartDao!!.DeleteCartitem(orderCartItem.item_name.toString(),orderCartItem.top_ids)
+        if(orderCartItem.top_ids.contains(",")){
+            val tops=orderCartItem.top_ids.split(",")
+            for(top in tops){
+                toppingDao!!.DeleteTopping(top.toInt())
+            }
+        }
+        else{
+            if(!orderCartItem.top_ids.equals("")){
+                toppingDao!!.DeleteTopping(orderCartItem.top_ids.toInt())
+            }
+
+        }
+
         getCartItemsfromDataBase()
 
     }
@@ -601,19 +612,14 @@ if(comItemLists.size>0){
 
     }
     fun showLoyaltyDialog(){
-        val builder=AlertDialog.Builder(this)
         var loyalty=getString(R.string.loyalty_points_txt).toString()
         loyalty=loyalty.replace("%",loyalty_points)
         val view=layoutInflater.inflate(R.layout.dialog_loyalty,null)
-        builder.setView(view)
-        alertDialogLoyalty=builder.create()
-        alertDialogLoyalty!!.show()
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(view)
+        dialog.show()
         view.txt_loyalty_count.text=loyalty
-        view.txt_back.setOnClickListener {
-            alertDialogLoyalty!!.dismiss()
-        }
         val user_points=loyalty_points.toDouble()
-
         view.txt_apply_loyalty.setOnClickListener {
             if(view.edit_loyalty.text.toString().isEmpty()){
                 Toast.makeText(this, getString(R.string.please_loyalty_points), Toast.LENGTH_SHORT).show()
@@ -623,7 +629,7 @@ if(comItemLists.size>0){
 
                 if(points>0 && points<user_points){
                     RedeemLoyaltyPoints(points.toString())
-                    alertDialogLoyalty!!.dismiss()
+                   dialog.dismiss()
                 }
 
 
@@ -636,27 +642,23 @@ if(comItemLists.size>0){
 
         fun showRedeemDialog() {
             val view = layoutInflater.inflate(R.layout.dialog_redeem, null)
-// var bottomSheetBehavior= BottomSheetBehavior<RelativeLayout>()
-//            bottomSheetBehavior = BottomSheetBehavior.from(view.)
-            val builder = AlertDialog.Builder(this)
-            builder.setView(view)
-             alertDialog = builder.create()
-            alertDialog!!.show()
-            view.txt_back.setOnClickListener {
-                alertDialog!!.dismiss()
-            }
+            val dialog = BottomSheetDialog(this)
             view.txt_apply.setOnClickListener {
                 if (view.edit_coupon_code.text.toString().isEmpty()) {
                     Toast.makeText(this, getString(R.string.please_coupon_code), Toast.LENGTH_SHORT)
-                        .show()
+                            .show()
                 } else {
                     ApplyCouponCode(view.edit_coupon_code.text.toString())
 //                    Toast.makeText(this, view.edit_coupon_code.text.toString(), Toast.LENGTH_SHORT)
 //                        .show()
 
-                    alertDialog!!.dismiss()
+                    dialog.dismiss()
                 }
             }
+            dialog.setContentView(view)
+            dialog.show()
+
+
         }
     fun ApplyCouponCode(couponCode :String){
         val kioskVolleyService=KioskVolleyService()

@@ -293,6 +293,35 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
                     startActivity(Intent(this@MenuActivity, ChooseComActivity::class.java).putExtra("com_id", subItemRecords.RestaurantPizzaID).putExtra("combo", subItemRecords.RestaurantPizzaItemName).putExtra("desc", subItemRecords.ResPizzaDescription).putExtra("price", subItemRecords.RestaurantPizzaItemPrice))
                 }
             }
+
+            override fun QuantityIncreased(type: Int, pos: Int) {
+                val subItemRecords = subItemRecords.get(pos)
+                val cartDatabse = CartDatabase.getDataBase(this@MenuActivity)
+                val cartDao = cartDatabse!!.OrderCartDao()
+                val cart_item = cartDao!!.getOrderItem(subItemRecords.RestaurantPizzaItemName!!)
+                when(type){
+                    0->{
+
+                        var quantity = cart_item.quantity
+                        if(quantity==1){
+                            cartDao.DeleteCartitem(cart_item.item_name!!,cart_item.top_ids)
+                        }
+                        else {
+                            quantity -= 1
+                            cart_item.quantity = quantity
+                            cartDao.Update(cart_item)
+                        }
+                    }
+                    1->{
+                        var quantity = cart_item.quantity
+                        quantity += 1
+                        cart_item.quantity = quantity
+                        cartDao.Update(cart_item)
+                    }
+
+                }
+                UpdateCart()
+            }
         })
         recyler_menu.adapter = adapter
 

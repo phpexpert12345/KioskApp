@@ -9,8 +9,8 @@ interface OrderCartDao {
     fun Update(orderCartItem: OrderCartItem)
     @Query("Select * from order_cart_item order by item_name")
     fun getCartItems():List<OrderCartItem>
-    @Query("delete from order_cart_item where item_name=:name ")
-    fun DeleteCartitem(name:String)
+    @Query("delete from order_cart_item where item_name=:name and top_ids=:top_ids ")
+    fun DeleteCartitem(name:String,top_ids:String)
     @Query("delete from order_cart_item")
     fun DeleteAll()
     @Query("select * from order_cart_item where item_name=:name")

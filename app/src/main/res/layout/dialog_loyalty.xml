@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
+        android:visibility="gone"
         android:id="@+id/relative_cart"
         >
         <ImageView

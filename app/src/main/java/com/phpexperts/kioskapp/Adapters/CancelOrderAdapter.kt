@@ -115,7 +115,7 @@ fun bind(extraItem: OrderCartItem, context: Context,position: Int){
         val pos=it.tag
         quantity.DeleteClicked(it, pos as Int)
     }
-    getToppingsfromDataBase(this,extraItem.item_name!!)
+    getToppingsfromDataBase(this,extraItem)
 
 }
     }
@@ -221,15 +221,40 @@ val extraItem=extraitems.get(position)
 
         }
     }
-    fun getToppingsfromDataBase(holder: CancelOrderViewHolder,item_name:String){
+    fun getToppingsfromDataBase(holder: CancelOrderViewHolder,orderCartItem: OrderCartItem){
         val cartDatabase=CartDatabase.getDataBase(context)
         val toppingDao=cartDatabase!!.ToppingDao()
-        var toppings_array=toppingDao!!.getToppingsbyItem(item_name)
+        val toppingItems=ArrayList<ToppingItems>()
+        var toppings_array=toppingDao!!.getToppingsbyItem(orderCartItem.item_name!!)
         if(toppings_array.size>0){
-            val toppingAdapter=ToppingAdapter(toppings_array as ArrayList<ToppingItems>,context)
-            val linearLayoutManager=LinearLayoutManager(context)
-            holder.itemView.recycler_toppings.adapter=toppingAdapter
-            holder.itemView.recycler_toppings.layoutManager=linearLayoutManager
+            val tops=orderCartItem.top_ids
+
+            if(tops.contains(",")){
+                val top=tops.split(",")
+                for(topp in toppings_array){
+                    for(tops in top){
+                        if(topp.topping_id==tops.toInt()){
+                            toppingItems.add(topp)
+                        }
+                    }
+                }
+
+            }
+            else{
+                val top=tops
+                for(topp in toppings_array){
+                    if(topp.topping_id==top.toInt()){
+                        toppingItems.add(topp)
+                    }
+                }
+
+            }
+            if(toppingItems.size>0) {
+                val toppingAdapter = ToppingAdapter(toppingItems, context)
+                val linearLayoutManager = LinearLayoutManager(context)
+                holder.itemView.recycler_toppings.adapter = toppingAdapter
+                holder.itemView.recycler_toppings.layoutManager = linearLayoutManager
+            }
         }
 
     }

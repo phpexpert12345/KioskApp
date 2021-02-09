@@ -64,7 +64,7 @@ Is this correct order.</string>
     <string name="enter_cvv">Please enter cvv number</string>
     <string name="valid_cvv">Please enter valid cvv</string>
     <string name="submit_successful">Card details Submitted successfully!</string>
-    <string name="apply">Apply</string>
+    <string name="apply">Submit</string>
     <string name="enter_email">Please enter email address</string>
     <string name="enter_valid_email">Please enter valid email address</string>
     <string name="enter_password">Please enter password</string>

@@ -149,7 +149,8 @@ import kotlin.collections.HashMap
          orderCartItem.com = false
          orderCartItem.item_id = subItemRecords!!.ItemID
          orderCartItem.deal_id = subItemRecords!!.ItemID
-         cartDao!!.Insert(orderCartItem)
+         orderCartItem.total_price="0.0"
+
          if (cartAdapter != null) {
              var toppings_sum = 0.0
              val selected_toppings = cartAdapter!!.selected_items
@@ -189,23 +190,22 @@ import kotlin.collections.HashMap
              }
          }
          if (total_price > 0.0) {
-             val cartitem = cartDao.getOrderItem(subItemRecords!!.RestaurantPizzaItemName.toString())
-             cartitem.total_price = total_price.toString()
+             orderCartItem.total_price = total_price.toString()
              if(topp_ids.length>0){
-                 cartitem.top_ids=topp_ids.toString()
+                 orderCartItem.top_ids=topp_ids.toString()
              }
-             cartDao.Update(cartitem)
+             cartDao.Insert(orderCartItem)
          } else {
-             val cartitem = cartDao.getOrderItem(subItemRecords!!.RestaurantPizzaItemName.toString())
-             cartitem.total_price = price.toString()
+
+             orderCartItem.total_price = price.toString()
              if(topp_ids.length>0){
-                 cartitem.top_ids=topp_ids.toString()
+                 orderCartItem.top_ids=topp_ids.toString()
              }
-             cartDao.Update(cartitem)
+             cartDao.Insert(orderCartItem)
          }
-//         Toast.makeText(this, getString(R.string.cart_added), Toast.LENGTH_SHORT).show()
-//         startActivity(Intent(this, CancelOrderActivity::class.java).putExtra("type", type))
-//         finish()
+         Toast.makeText(this, getString(R.string.cart_added), Toast.LENGTH_SHORT).show()
+         startActivity(Intent(this, CancelOrderActivity::class.java).putExtra("type", type))
+         finish()
 
      }
      fun UpdateCartItem(cartItem: OrderCartItem){
