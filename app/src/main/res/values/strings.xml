@@ -38,7 +38,7 @@ Is this correct order.</string>
     <string name="login_txt">Do you already have an account?</string>
     <string name="click_here">Click Here</string>
     <string name="login">Login</string>
-    <string name="guest_user">Guest User</string>
+    <string name="guest_user">Proceed without logging in</string>
     <string name="cancel">Cancel</string>
     <string name="txt_continue">Continue</string>
     <string name="name_error">Please enter name</string>

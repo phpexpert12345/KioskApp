@@ -47,7 +47,7 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
         setContentView(R.layout.layout_menu_screen)
         val guestUser = DroidPrefs.get(this, "guest", GuestUser::class.java)
         val user = DroidPrefs.get(this, "user", User::class.java)
-        if (!guestUser.phone.equals("")) {
+        if (!guestUser.name.equals("")) {
             relative_logout.visibility = View.GONE
             txt_user_name.text = guestUser.name
             txt_user_phone.text = guestUser.phone

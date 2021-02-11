@@ -28,12 +28,7 @@ KioskApplication.finish_activity=false
             if(edit_name.text.toString().isEmpty()){
                 Toast.makeText(this,getString(R.string.name_error), Toast.LENGTH_SHORT).show();
             }
-            else if(edit_phone.text.toString().isEmpty()){
-                Toast.makeText(this,getString(R.string.phone_error), Toast.LENGTH_SHORT).show();
-            }
-            else if(edit_phone.text.toString().length<10){
-                Toast.makeText(this,getString(R.string.phone_validation_error), Toast.LENGTH_SHORT).show();
-            }
+
             else {
 //                Login()
                 val guestUser=GuestUser()
