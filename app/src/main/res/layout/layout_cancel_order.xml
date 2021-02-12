@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
+
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
@@ -329,5 +331,10 @@
         android:textColor="@color/color_add"/>
 
     </LinearLayout>
-
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_place_order"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

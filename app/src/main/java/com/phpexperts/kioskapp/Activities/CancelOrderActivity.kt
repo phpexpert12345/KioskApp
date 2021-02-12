@@ -3,6 +3,7 @@
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -504,7 +505,14 @@ if(comItemLists.size>0){
                 }
             }
             else if(type.equals("place_order")){
-                progressDialog.dismiss()
+
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+                    progress_place_order.visibility=View.GONE
+                    txt_place_order.isEnabled=true
+                }
+                else {
+                    progressDialog.dismiss()
+                }
 
                     if(response.has("success")){
                         val success=response.getInt("success")
@@ -540,7 +548,12 @@ if(comItemLists.size>0){
                 Log.i("response", response.toString())
             }
             else if(type.equals("terminal")){
-                progressDialog.dismiss()
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+                    progress_place_order.visibility=View.GONE
+                }
+                else {
+                    progressDialog.dismiss()
+                }
                 Log.i("terminal", response.toString())
                 if(response.has("response")){
                     val res=response.getString("response")
@@ -561,13 +574,19 @@ if(comItemLists.size>0){
                     }
                 }
                 else{
+                    txt_place_order.isEnabled=true
                     Toast.makeText(this,response.getString("error_msg"),Toast.LENGTH_SHORT).show()
                 }
 
             }
             else if(type.equals("capture_Intent")){
                 Log.i("response", response.toString())
-                progressDialog.dismiss()
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+                    progress_place_order.visibility=View.GONE
+                }
+                else {
+                    progressDialog.dismiss()
+                }
                 PlaceOrder()
 
             }
@@ -1044,7 +1063,12 @@ if(comItemLists.size>0){
 //        Log.i("reason", url)
         val userInfo=DroidPrefs.get(this, "userinfo", UserInfo::class.java)
         val user=DroidPrefs.get(this,"user", User::class.java)
-        progressDialog=Util.showProgressDialog(this,"Placing order...")
+          if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+            progress_place_order.visibility=View.VISIBLE
+         }
+        else {
+              progressDialog = Util.showProgressDialog(this, "Placing order...")
+          }
          val volleyService=KioskVolleyService()
         volleyService.type="place_order"
         if(user.CustomerId!=null){
@@ -1177,7 +1201,13 @@ if(comItemLists.size>0){
     }
      fun CollectPaymentTerminal(){
          val kioskVolleyService=KioskVolleyService()
-         progressDialog=Util.showProgressDialog(this,"Collecting payment...")
+         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+             progress_place_order.visibility=View.VISIBLE
+             txt_place_order.isEnabled=false
+         }
+         else{
+             progressDialog = Util.showProgressDialog(this, "Collecting payment...")
+         }
          kioskVolleyService.url=Apis.BASE_URL+"phpexpert_payment_collect_Payment_Terminal.php"
          kioskVolleyService.context=this
          kioskVolleyService.kioskResult=this
@@ -1194,7 +1224,12 @@ if(comItemLists.size>0){
 
      fun CaptureIntent(id:String){
          val kioskVolleyService=KioskVolleyService()
-         progressDialog=Util.showProgressDialog(this,"Capturing intent....")
+         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+             progress_place_order.visibility=View.VISIBLE
+         }
+         else {
+             progressDialog = Util.showProgressDialog(this, "Capturing intent....")
+         }
          kioskVolleyService.url=Apis.BASE_URL+"phpexpert_payment_Capture_Payment_Terminal.php"
          kioskVolleyService.context=this
          kioskVolleyService.kioskResult=this
