@@ -83,7 +83,7 @@
         android:background="@color/color_orange"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="50sp"
+        android:textSize="43sp"
         android:text="@string/guest_user"
         android:textColor="@color/white"
         android:id="@+id/btn_guest"/>

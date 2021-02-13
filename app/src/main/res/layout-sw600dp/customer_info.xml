@@ -84,7 +84,7 @@
         android:layout_alignParentBottom="true"
 
         android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="35sp"
+        android:textSize="30sp"
         android:text="@string/guest_user"
         android:textColor="@color/white"
         android:id="@+id/btn_guest"/>

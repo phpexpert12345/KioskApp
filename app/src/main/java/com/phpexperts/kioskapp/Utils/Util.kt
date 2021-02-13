@@ -39,7 +39,7 @@ class Util {
             val progressDialog=ProgressDialog(context)
             progressDialog.setMessage(message)
             progressDialog.setCancelable(false)
-            progressDialog.setCanceledOnTouchOutside(true)
+            progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
             return progressDialog
         }

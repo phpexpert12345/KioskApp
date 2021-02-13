@@ -85,7 +85,7 @@ android:id="@+id/linear_name"
         android:layout_alignParentBottom="true"
 
         android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="@string/guest_user"
         android:textColor="@color/white"
         android:id="@+id/btn_guest"/>

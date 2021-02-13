@@ -37,7 +37,7 @@ class ActivityThankYou : AppCompatActivity() {
             txt_user_thank_you.text=getString(R.string.thank_you_txt)+" "+user.user_name
         }
         else {
-            if(!guestUser.phone.equals("")) {
+            if(!guestUser.name.equals("")) {
                 txt_user_thank_you.text = getString(R.string.thank_you_txt)+" "+guestUser.name+"!"
             }
         }
