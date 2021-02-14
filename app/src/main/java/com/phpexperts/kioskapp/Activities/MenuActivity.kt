@@ -49,14 +49,23 @@ class  MenuActivity :AppCompatActivity(), KioskVolleyService.KioskResult {
         val user = DroidPrefs.get(this, "user", User::class.java)
         if (!guestUser.name.equals("")) {
             relative_logout.visibility = View.GONE
+            txt_user_name.visibility=View.VISIBLE
+            txt_user_phone.visibility=View.VISIBLE
             txt_user_name.text = guestUser.name
             txt_user_phone.text = guestUser.phone
-        } else {
-            if (user.CustomerId != null) {
+        }
+        else if (user.CustomerId != null) {
                 relative_logout.visibility = View.VISIBLE
+            txt_user_name.visibility=View.VISIBLE
+            txt_user_phone.visibility=View.VISIBLE
                 txt_user_name.text = user.user_name
                 txt_user_phone.text = user.user_phone
             }
+
+        else{
+            txt_user_name.visibility=View.GONE
+            txt_user_phone.visibility=View.GONE
+            relative_logout.visibility = View.GONE
         }
 
 

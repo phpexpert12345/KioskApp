@@ -25,11 +25,9 @@ class CustomerInfoActivity : AppCompatActivity() {
         setContentView(R.layout.customer_info)
 KioskApplication.finish_activity=false
         btn_guest.setOnClickListener{
-            if(edit_name.text.toString().isEmpty()){
-                Toast.makeText(this,getString(R.string.name_error), Toast.LENGTH_SHORT).show();
-            }
 
-            else {
+
+
 //                Login()
                 val guestUser=GuestUser()
                 guestUser.name=edit_name.text.toString()
@@ -37,7 +35,7 @@ KioskApplication.finish_activity=false
                 DroidPrefs.apply(this,"guest",guestUser)
                 startActivity(Intent(this@CustomerInfoActivity, OrderTypeActivity::class.java))
                 finish()
-            }
+
         }
         setSpan("Click Here")
     }
