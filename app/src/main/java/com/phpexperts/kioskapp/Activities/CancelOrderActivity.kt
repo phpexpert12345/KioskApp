@@ -145,10 +145,11 @@ Toast.makeText(this,getString(R.string.loyalty_txt),Toast.LENGTH_SHORT).show()
         }
 
         txt_place_order.setOnClickListener {
-            if (!Terminal.isInitialized()) {
-                Terminal.initTerminal(this, LogLevel.INFO, this, this)
-            }
+//            if (!Terminal.isInitialized()) {
+//                Terminal.initTerminal(this, LogLevel.INFO, this, this)
+//            }
             CollectPaymentTerminal()
+//            Connect()
 //            Connect()
 //            Connect()
 
@@ -1027,33 +1028,66 @@ if(comItemLists.size>0){
         volleyService.CreateStringRequest(params)
     }
      fun Connect(){
-         progressDialog=Util.showProgressDialog(this,"Initiating Payment...")
+         if (!Terminal.isInitialized()) {
+                Terminal.initTerminal(this, LogLevel.INFO, this, this)
+            }
+         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+             progress_place_order.visibility=View.VISIBLE
+         }
+         else {
+             progressDialog=Util.showProgressDialog(this,"Initiating Payment...")
+         }
+
+
          val config = DiscoveryConfiguration(0, DeviceType.CHIPPER_2X, true)
          Terminal.getInstance().discoverReaders(config,object: DiscoveryListener {
              override fun onUpdateDiscoveredReaders(readers: List<Reader>) {
                  val firstReader = readers.first()
                  Terminal.getInstance().connectReader(firstReader,object: ReaderCallback {
                      override fun onSuccess(reader: Reader) {
-                         progressDialog.dismiss()
-                         Log.i("respose",reader.serialNumber!!)
+                         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+                             progress_place_order.visibility=View.GONE
+                         }
+                         else {
+                             progressDialog.dismiss()
+                         }
                          CollectPaymentTerminal()
+                         Log.i("url",reader.serialNumber!!)
+
 
                      }
 
                      override fun onFailure(e: TerminalException) {
-                         progressDialog.dismiss()
-                         Log.i("respose","failure "+e.errorMessage)
+                         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+                             progress_place_order.visibility=View.GONE
+                         }
+                         else {
+                             progressDialog.dismiss()
+                         }
+
+                         Log.i("url","failure "+e.errorMessage)
                      }
                  })
              }
          },object: Callback {
              override fun onSuccess() {
-
-                 Log.i("respose","success callack")
+                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+                     progress_place_order.visibility=View.GONE
+                 }
+                 else {
+                     progressDialog.dismiss()
+                 }
+                 Log.i("url","success callack")
              }
 
              override fun onFailure(e: TerminalException) {
-                 Log.i("respose","failure callack")
+                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+                     progress_place_order.visibility=View.GONE
+                 }
+                 else {
+                     progressDialog.dismiss()
+                 }
+                 Log.i("url","failure callack")
              }
          })
 
